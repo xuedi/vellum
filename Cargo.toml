@@ -1,0 +1,18 @@
+[package]
+name = "vellum"
+version = "0.1.0"
+edition = "2021"
+description = "Static HTML generator from Markdown with embedded assets"
+authors = ["Vellum Contributors"]
+
+[dependencies]
+pulldown-cmark = "0.10"   # Markdown parsing
+base64 = "0.22"           # Logo embedding
+thiserror = "1.0"         # Error types
+chrono = "0.4"            # Date/time for template variables
+toml = "0.8"              # Config file parsing
+serde = { version = "1.0", features = ["derive"] }  # Serialization for config
+dirs = "5.0"              # XDG directory paths
+
+[dev-dependencies]
+tempfile = "3"            # Temporary files for integration tests

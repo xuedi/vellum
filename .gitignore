@@ -1,0 +1,15 @@
+.idea/
+
+# Build artifacts
+/target
+
+# Generated output
+/output/
+
+# Demo output (regenerate with: just demo)
+demo-*.html
+
+# Coverage reports (regenerate with: just coverage)
+coverage-report.html
+tarpaulin-report.html
+*.profraw

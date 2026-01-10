@@ -1,0 +1,17 @@
+# Vellum - Configuration
+# This file controls the HTML generator settings.
+
+[document]
+# Document title (shown in browser tab and header)
+title = "Rust & Roll - Official Band Page"
+
+# Section title that becomes a dropdown menu (empty string to disable)
+dropdown = "Archive"
+
+[paths]
+# Input files (paths relative to where vellum is run)
+markdown = "demo/rockband/data/index.md"
+logo = "demo/rockband/config/logo.png"
+
+# Output
+output = "demo-rockband.html"

@@ -1,0 +1,18 @@
+# Vellum - Configuration
+# This file controls the HTML generator settings.
+
+[document]
+# Document title (shown in browser tab and header)
+title = "Vellum Documentation"
+
+# Section title that becomes a dropdown menu (empty string to disable)
+dropdown = "Technical"
+
+[paths]
+# Input files (paths relative to where vellum is run)
+markdown = "demo/vellum/data/index.md"
+logo = "demo/vellum/config/logo.png"
+
+# Output
+output = "demo-vellum.html"
+

@@ -1,0 +1,20 @@
+# Vellum - Configuration
+# This file controls the HTML generator settings.
+
+[document]
+# Document title (shown in browser tab and header)
+title = "My Portfolio"
+
+# Section title that becomes a dropdown menu (empty string to disable)
+dropdown = "Projects"
+
+[paths]
+# Input files
+markdown = "../professional_portfolio/data/index.md"
+logo = "assets/logo.png"
+
+# Output
+output = "../index.html"
+
+# Optional: Path to skill matrix file (empty string to disable)
+skill_matrix = "data/skills.md"
