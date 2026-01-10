@@ -1,17 +1,17 @@
 /*
- * Vellum - Dark Theme Styles
- * Color scheme: Deep navy with coral accent
+ * Vellum - Slate & Teal Theme
+ * Color scheme: Slate gray with teal accent
  */
 
 :root {
-    --bg-color: #0D0E4C;
-    --card-bg: #161850;
-    --text-color: #dfe7fe;
-    --text-muted: #64667B;
-    --accent: #1a1b5e;
-    --highlight: #FC7F4D;
-    --border-color: #64667B;
-    --success: #dfe7fe;
+    --bg-color: #1e293b;
+    --card-bg: #334155;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --accent: #0f172a;
+    --highlight: #2dd4bf;
+    --border-color: #475569;
+    --success: #14b8a6;
 
     /* Paper-style content area */
     --content-bg: #ffffff;

@@ -1,17 +1,17 @@
 /*
- * Vellum - Dark Theme Styles
- * Color scheme: Deep navy with coral accent
+ * Vellum - Emerald & Gold Theme
+ * Color scheme: Deep emerald with gold accent
  */
 
 :root {
-    --bg-color: #0D0E4C;
-    --card-bg: #161850;
-    --text-color: #dfe7fe;
-    --text-muted: #64667B;
-    --accent: #1a1b5e;
-    --highlight: #FC7F4D;
-    --border-color: #64667B;
-    --success: #dfe7fe;
+    --bg-color: #064e3b;
+    --card-bg: #065f46;
+    --text-color: #ecfdf5;
+    --text-muted: #6ee7b7;
+    --accent: #022c22;
+    --highlight: #fbbf24;
+    --border-color: #059669;
+    --success: #10b981;
 
     /* Paper-style content area */
     --content-bg: #ffffff;

@@ -1,17 +1,17 @@
 /*
- * Vellum - Dark Theme Styles
- * Color scheme: Deep navy with coral accent
+ * Vellum - Crimson & Gray Theme
+ * Color scheme: Dark charcoal with crimson accent
  */
 
 :root {
-    --bg-color: #0D0E4C;
-    --card-bg: #161850;
-    --text-color: #dfe7fe;
-    --text-muted: #64667B;
-    --accent: #1a1b5e;
-    --highlight: #FC7F4D;
-    --border-color: #64667B;
-    --success: #dfe7fe;
+    --bg-color: #111827;
+    --card-bg: #1f2937;
+    --text-color: #f9fafb;
+    --text-muted: #9ca3af;
+    --accent: #000000;
+    --highlight: #dc2626;
+    --border-color: #374151;
+    --success: #ef4444;
 
     /* Paper-style content area */
     --content-bg: #ffffff;

@@ -1,17 +1,17 @@
 /*
- * Vellum - Dark Theme Styles
- * Color scheme: Deep navy with coral accent
+ * Vellum - Purple & Cyan Theme
+ * Color scheme: Deep purple with cyan accent
  */
 
 :root {
-    --bg-color: #0D0E4C;
-    --card-bg: #161850;
-    --text-color: #dfe7fe;
-    --text-muted: #64667B;
-    --accent: #1a1b5e;
-    --highlight: #FC7F4D;
-    --border-color: #64667B;
-    --success: #dfe7fe;
+    --bg-color: #2e1065;
+    --card-bg: #4c1d95;
+    --text-color: #f5f3ff;
+    --text-muted: #a78bfa;
+    --accent: #1e1b4b;
+    --highlight: #22d3ee;
+    --border-color: #6d28d9;
+    --success: #8b5cf6;
 
     /* Paper-style content area */
     --content-bg: #ffffff;
