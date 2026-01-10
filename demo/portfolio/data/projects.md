@@ -1,4 +1,6 @@
-### Project Alpha
+# Projects
+
+## Project Alpha
 
 A web application for task management built with modern technologies.
 
@@ -6,7 +8,7 @@ A web application for task management built with modern technologies.
 - **Status**: Production
 - **Impact**: 50% reduction in manual tracking
 
-### Project Beta
+## Project Beta
 
 Internal tooling for automated deployment pipelines.
 
@@ -14,7 +16,7 @@ Internal tooling for automated deployment pipelines.
 - **Status**: Maintenance
 - **Impact**: Reduced deployment time from hours to minutes
 
-### Project Gamma
+## Project Gamma
 
 Documentation generator for technical specifications.
 

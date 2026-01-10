@@ -1,9 +1,9 @@
 
-#### Feedback Log
+# Feedback Log
 
 Documented feedback from 1:1s, performance reviews, and peer feedback.
 
-##### Manager Feedback
+## Manager Feedback
 
 **January 2025 - Quarterly Review**
 > "Alex has shown strong technical growth this quarter. The Project Alpha delivery was excellent, and stakeholders were impressed with the quality. One area to focus on: being more proactive in cross-team communication. Sometimes other teams are surprised by changes that affect them."
@@ -21,7 +21,7 @@ Documented feedback from 1:1s, performance reviews, and peer feedback.
 
 ---
 
-##### Peer Feedback
+## Peer Feedback
 
 **Code Review - Sarah (Senior Engineer)**
 > "Your PRs are well-structured and easy to review. The test coverage is thorough. One suggestion: consider adding more context in commit messages about *why* changes were made, not just what changed."
@@ -34,7 +34,7 @@ Documented feedback from 1:1s, performance reviews, and peer feedback.
 
 ---
 
-##### 360 Review Highlights (Annual)
+## 360 Review Highlights (Annual)
 
 | Category | Score | Comments |
 |----------|-------|----------|
@@ -46,7 +46,7 @@ Documented feedback from 1:1s, performance reviews, and peer feedback.
 
 ---
 
-##### Self-Noted Observations
+## Self-Noted Observations
 
 Things I've noticed that I want to improve:
 

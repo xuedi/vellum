@@ -81,14 +81,51 @@ pub fn transform_achievement_markers(markdown: &str) -> String {
 }
 
 pub fn process_includes(markdown: &str, base_path: &str) -> String {
+    process_includes_recursive(markdown, base_path, 0, false)
+}
+
+fn process_includes_recursive(
+    markdown: &str,
+    base_path: &str,
+    parent_level: usize,
+    is_included: bool,
+) -> String {
     let mut result = String::with_capacity(markdown.len());
     let base = Path::new(base_path);
+    let mut current_level = parent_level;
+    let mut first_h1_skipped = false;
 
     for line in markdown.lines() {
-        if line.trim().starts_with("Content in:") {
-            if let Some(start) = line.find("](") {
+        let trimmed = line.trim();
+
+        // Track current heading level
+        if trimmed.starts_with('#') {
+            let level = trimmed.chars().take_while(|&c| c == '#').count();
+            if level > 0 && trimmed.chars().nth(level).map_or(true, |c| c.is_whitespace()) {
+                if is_included && level == 1 && !first_h1_skipped {
+                    first_h1_skipped = true;
+                    continue;
+                }
+
+                let effective_level = if is_included {
+                    level + parent_level.max(1) - 1
+                } else {
+                    level
+                };
+
+                current_level = effective_level;
+
+                result.push_str(&"#".repeat(effective_level));
+                result.push_str(&line[level..]);
+                result.push('\n');
+                continue;
+            }
+        }
+
+        if trimmed.starts_with("Include:") {
+            if let Some(start) = line.find('(') {
                 if let Some(end) = line[start..].find(')') {
-                    let path = &line[start + 2..start + end];
+                    let path = &line[start + 1..start + end];
                     if path.ends_with(".md") {
                         let full_path = base.join(path);
                         match std::fs::read_to_string(&full_path) {
@@ -102,7 +139,8 @@ pub fn process_includes(markdown: &str, base_path: &str) -> String {
                                     .parent()
                                     .map(|p| p.to_string_lossy().to_string())
                                     .unwrap_or_else(|| base_path.to_string());
-                                let processed = process_includes(&content, &parent);
+                                let processed =
+                                    process_includes_recursive(&content, &parent, current_level, true);
                                 result.push_str(&processed);
                                 result.push('\n');
                                 continue;
@@ -408,7 +446,7 @@ mod tests {
         let include_path = dir.join("include_test.md");
         std::fs::write(&include_path, "Included content here").unwrap();
 
-        let input = format!("Content in: [test]({}/include_test.md)", dir.display());
+        let input = format!("Include: [test]({}/include_test.md)", dir.display());
         let output = process_includes(&input, ".");
         assert!(output.contains("Included content here"));
         std::fs::remove_file(&include_path).ok();
@@ -416,7 +454,7 @@ mod tests {
 
     #[test]
     fn test_process_includes_missing_file() {
-        let input = "Content in: [test](nonexistent_file.md)";
+        let input = "Include: [test](nonexistent_file.md)";
         let output = process_includes(input, ".");
         assert!(output.contains("Error: Could not include"));
     }
@@ -427,18 +465,18 @@ mod tests {
         let private_path = dir.join("private_test.md");
         std::fs::write(&private_path, "PRIVATE_NEVER_AS_IS\nSecret content").unwrap();
 
-        let input = format!("Content in: [test]({}/private_test.md)", dir.display());
+        let input = format!("Include: [test]({}/private_test.md)", dir.display());
         let output = process_includes(&input, ".");
         assert!(!output.contains("Secret content"));
-        assert!(output.contains("Content in:"));
+        assert!(output.contains("Include:"));
         std::fs::remove_file(&private_path).ok();
     }
 
     #[test]
     fn test_process_includes_non_md_file() {
-        let input = "Content in: [test](file.txt)";
+        let input = "Include: [test](file.txt)";
         let output = process_includes(input, ".");
-        assert!(output.contains("Content in:"));
+        assert!(output.contains("Include:"));
     }
 
     #[test]
@@ -480,6 +518,43 @@ mod tests {
         let result = parse_skill_matrix(path.to_str().unwrap());
         assert!(result.is_none());
         std::fs::remove_file(&path).ok();
+    }
+
+    #[test]
+    fn test_process_includes_new_logic() {
+        let dir = std::env::temp_dir();
+        let include_path = dir.join("include_new.md");
+        std::fs::write(&include_path, "# Included Title\n## Subtitle\nContent").unwrap();
+
+        let input = format!("## Parent Section\n\nInclude: [test]({}/include_new.md)", dir.display());
+        // We need to pass the base path correctly. 
+        // Note: process_includes currently doesn't take current level, so we'll need to update its signature or use a wrapper.
+        let output = process_includes(&input, ".");
+        
+        // Expected behavior:
+        // # Included Title is ignored.
+        // ## Subtitle becomes #### Subtitle (2 + 2 = 4? OR 2 (parent) + (2 (child) - 1 (offset)) = 3?)
+        // Wait, "adjust every level to the level of the document where it is included into"
+        // If parent is at ## (level 2), maybe it means child's level 2 becomes level 3?
+        // Let's assume: new_level = parent_level + child_level - 1 (since level 1 is ignored and effectively acts as level 0)
+        // So ## (2) in child becomes 2 + 2 - 1 = 3? OR if it's "to the level", maybe 2 + 1 = 3.
+        
+        assert!(!output.contains("# Included Title"));
+        assert!(output.contains("### Subtitle")); 
+        std::fs::remove_file(&include_path).ok();
+    }
+
+    #[test]
+    fn test_process_includes_no_label() {
+        let dir = std::env::temp_dir();
+        let include_path = dir.join("include_no_label.md");
+        std::fs::write(&include_path, "# Title\nContent").unwrap();
+
+        let input = format!("Include: []({}/include_no_label.md)", dir.display());
+        let output = process_includes(&input, ".");
+        assert!(output.contains("Content"));
+        assert!(!output.contains("# Title"));
+        std::fs::remove_file(&include_path).ok();
     }
 
     #[test]

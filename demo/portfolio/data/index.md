@@ -16,34 +16,34 @@ This portfolio is automatically generated using [Vellum](https://github.com/xued
 
 ## Projects
 
-Content in: [projects](projects.md)
+Include: [projects](projects.md)
 
 ## Skill-Matrix
 
-Content in: [skills](skills.md)
+Include: [skills](skills.md)
 
 ## Goals
 
-Content in: [quarterly-goals](quarterly-goals.md)
+Include: [quarterly-goals](quarterly-goals.md)
 
 ## Self-Assessment
 
-Content in: [self-assessment](self-assessment.md)
+Include: [self-assessment](self-assessment.md)
 
 ## Other Documents
 
 ### Worklog
 
-Content in: [worklog](worklog.md)
+Include: [worklog](worklog.md)
 
 ### Feedback Log
 
-Content in: [feedback-log](feedback-log.md)
+Include: [feedback-log](feedback-log.md)
 
 ### Learning Plan
 
-Content in: [learning-plan](learning-plan.md)
+Include: [learning-plan](learning-plan.md)
 
 ### Career Roadmap
 
-Content in: [career-roadmap](career-roadmap.md)
+Include: [career-roadmap](career-roadmap.md)

@@ -1,5 +1,6 @@
+# Getting Stated
 
-### Installation
+## Installation
 
 Clone the repository and build with Cargo:
 
@@ -11,13 +12,13 @@ cargo build --release
 
 Run `just install` to set up the global configuration directory at `~/.config/vellum/`.
 
-### Quick Start
+## Quick Start
 
 1. Create your main Markdown file with level 2 headings for each section
 2. Configure `config.toml` with your input and output paths
 3. Run `vellum` to generate your HTML
 
-### Project Structure
+## Project Structure
 
 A typical Vellum project looks like this:
 
@@ -33,7 +34,7 @@ project/
   index.html (generated)
 ```
 
-### Configuration Location
+## Configuration Location
 
 Vellum searches for configuration in this order:
 

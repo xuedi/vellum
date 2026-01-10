@@ -1,5 +1,6 @@
+# Technical
 
-### Architecture
+## Architecture
 
 Vellum is built in Rust for performance and reliability. The generation pipeline follows these stages:
 
@@ -12,7 +13,7 @@ Vellum is built in Rust for performance and reliability. The generation pipeline
 
 Each stage has dedicated error handling with clear messages for troubleshooting.
 
-### Configuration Reference
+## Configuration Reference
 
 The `config.toml` file has two sections:
 
@@ -26,7 +27,7 @@ The `config.toml` file has two sections:
 - `output` - Path for generated HTML file
 - `skill_matrix` - Optional path to skill matrix Markdown file
 
-### Supported Image Formats
+## Supported Image Formats
 
 Vellum embeds images as base64 data URIs. Supported formats:
 
@@ -38,17 +39,17 @@ Vellum embeds images as base64 data URIs. Supported formats:
 | WebP | image/webp |
 | SVG | image/svg+xml |
 
-### Include Syntax
+## Include Syntax
 
 To include content from another file:
 
 ```
-Content in: [label](filename.md)
+Include: [label](filename.md)
 ```
 
 The label is for documentation purposes. The file path is relative to the main Markdown file. Only `.md` files can be included. Files starting with underscore are treated as private and skipped.
 
-### Template Variables
+## Template Variables
 
 Available variables for substitution:
 
@@ -58,7 +59,7 @@ Available variables for substitution:
 | `{{CURRENT_DATE}}` | ISO date (e.g., 2025-01-10) |
 | `{{CURRENT_DATETIME}}` | ISO datetime (e.g., 2025-01-10T14:30:00) |
 
-### Error Handling
+## Error Handling
 
 Vellum provides specific error types:
 

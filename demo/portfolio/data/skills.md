@@ -1,9 +1,9 @@
 
-### Skills Database
+# Skills Database
 
 Self-assessed skill levels (0-10 scale).
 
-#### skill matrix
+## skill matrix
 
 | Skill              | Level | Notes                    |
 |--------------------|-------|--------------------------|

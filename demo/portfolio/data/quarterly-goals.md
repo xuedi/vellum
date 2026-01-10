@@ -1,9 +1,10 @@
+# Goals
 
-### Q1 2025 Goals
+## Q1 2025 Goals
 
 Goals aligned with team objectives and personal development.
 
-#### Technical Goals
+### Technical Goals
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
@@ -11,7 +12,7 @@ Goals aligned with team objectives and personal development.
 | Learn async Rust patterns | Complete 3 async refactors | Complete | 100% |
 | Reduce technical debt | Close 10 legacy issues | At Risk | 40% |
 
-#### Professional Development Goals
+### Professional Development Goals
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
@@ -19,7 +20,7 @@ Goals aligned with team objectives and personal development.
 | Expand cloud knowledge | AWS Solutions Architect cert | On Track | 60% |
 | Build mentoring experience | Onboard 1 new team member | Complete | 100% |
 
-#### Team Contribution Goals
+### Team Contribution Goals
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
@@ -29,21 +30,21 @@ Goals aligned with team objectives and personal development.
 
 ---
 
-### Q2 2025 Goals (Draft)
+## Q2 2025 Goals (Draft)
 
 Preliminary goals for next quarter, pending manager discussion.
 
-#### Technical Goals
+### Technical Goals
 - [ ] Lead architecture review for Project Delta
 - [ ] Implement observability improvements (tracing, metrics)
 - [ ] Reduce API response times by 20%
 
-#### Professional Development Goals
+### Professional Development Goals
 - [ ] Complete AWS certification
 - [ ] Attend one industry conference
 - [ ] Start tech blog outside work
 
-#### Team Contribution Goals
+### Team Contribution Goals
 - [ ] Shadow senior engineer on incident response
 - [ ] Contribute to hiring process (conduct 3+ interviews)
 - [ ] Document team runbooks

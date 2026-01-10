@@ -98,7 +98,7 @@ Highlight key achievements in lists using the `<!` marker:
 Keep your project organized by splitting content into multiple files:
 ```markdown
 ## Projects
-Content in: [Project List](projects.md)
+Include: [Project List](projects.md)
 ```
 Vellum will automatically inline the content of `projects.md` at that location.
 

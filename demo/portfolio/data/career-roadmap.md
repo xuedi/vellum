@@ -1,9 +1,9 @@
 
-#### Career Roadmap
+# Career Roadmap
 
 Long-term career vision and development path.
 
-##### Current Position
+## Current Position
 
 **Software Engineer II** (Since: March 2023)
 
@@ -15,7 +15,7 @@ Core responsibilities:
 
 ---
 
-##### Short-Term Goal (1-2 Years)
+## Short-Term Goal (1-2 Years)
 
 **Target: Senior Software Engineer**
 
@@ -35,7 +35,7 @@ Core responsibilities:
 
 ---
 
-##### Medium-Term Goal (3-5 Years)
+## Medium-Term Goal (3-5 Years)
 
 **Target: Staff Engineer**
 
@@ -59,7 +59,7 @@ Core responsibilities:
 
 ---
 
-##### Long-Term Vision (5+ Years)
+## Long-Term Vision (5+ Years)
 
 **Option A: Principal Engineer / Architect**
 - Deep technical expertise
@@ -85,7 +85,7 @@ Core responsibilities:
 
 ---
 
-##### Career Development Conversations
+## Career Development Conversations
 
 | Date | With | Key Discussion Points |
 |------|------|----------------------|
@@ -96,7 +96,7 @@ Core responsibilities:
 
 ---
 
-##### Personal Values in Career
+## Personal Values in Career
 
 Things that matter to me in my work:
 

@@ -11,20 +11,20 @@ Vellum is designed for people who love writing in Markdown but need to share the
 
 ## Why Vellum?
 
-Content in: [why](why.md)
+Include: [why](why.md)
 
 ## How to use
 
-Content in: [howto](howto.md)
+Include: [howto](howto.md)
 
 ## Features
 
-Content in: [features](features.md)
+Include: [features](features.md)
 
 ## Getting Started
 
-Content in: [getting-started](getting-started.md)
+Include: [getting-started](getting-started.md)
 
 ## Technical
 
-Content in: [technical](technical.md)
+Include: [technical](technical.md)

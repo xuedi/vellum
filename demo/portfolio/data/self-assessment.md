@@ -1,9 +1,8 @@
-
-### Self-Assessment Q1 2025
+# Self-Assessment Q1 2025
 
 A reflection on my professional growth, strengths, and areas for improvement.
 
-#### Strengths
+## Strengths
 
 **Technical Excellence**
 I consistently deliver high-quality code with minimal bugs. My understanding of system architecture has grown significantly, allowing me to make better design decisions early in projects.
@@ -14,7 +13,7 @@ I enjoy tackling complex problems and breaking them down into manageable pieces.
 **Team Collaboration**
 I actively participate in code reviews and provide constructive feedback. Team members have mentioned they appreciate my detailed explanations when discussing technical decisions.
 
-#### Areas for Improvement
+## Areas for Improvement
 
 **Time Estimation**
 I tend to underestimate task complexity, especially for unfamiliar domains. I need to add more buffer time and break down tasks more granularly before committing to timelines.
@@ -25,7 +24,7 @@ While my code is well-commented, I sometimes delay writing user-facing documenta
 **Public Speaking**
 I get nervous during large meetings. Practicing presentations beforehand and volunteering for more demo sessions would help build confidence.
 
-#### Key Accomplishments This Quarter
+## Key Accomplishments This Quarter
 
 | Achievement | Impact | Date |
 |-------------|--------|------|
@@ -33,7 +32,7 @@ I get nervous during large meetings. Practicing presentations beforehand and vol
 | Mentored junior developer | Reduced onboarding time by 2 weeks | Feb 2025 |
 | Introduced automated testing | 30% fewer production bugs | Mar 2025 |
 
-#### Personal Rating
+## Personal Rating
 
 | Category | Self-Rating | Target |
 |----------|-------------|--------|

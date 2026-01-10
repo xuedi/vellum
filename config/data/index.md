@@ -16,8 +16,8 @@ This portfolio is automatically generated using [Vellum](https://github.com/xued
 
 A summary of recent work activities and achievements.
 
-Content in: [worklog](worklog.md)
+Include: [worklog](worklog.md)
 
 ## Projects
 
-Content in: [projects](projects.md)
+Include: [projects](projects.md)

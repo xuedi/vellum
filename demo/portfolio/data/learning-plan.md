@@ -1,9 +1,9 @@
 
-#### Learning Plan 2025
+# Learning Plan 2025
 
 Structured plan for continuous professional development.
 
-##### Current Focus: Cloud Architecture
+## Current Focus: Cloud Architecture
 
 **Goal:** Achieve AWS Solutions Architect Associate certification by Q2 2025
 
@@ -18,7 +18,7 @@ Structured plan for continuous professional development.
 
 ---
 
-##### Technical Books Queue
+## Technical Books Queue
 
 | Book | Author | Status | Key Takeaways |
 |------|--------|--------|---------------|
@@ -29,7 +29,7 @@ Structured plan for continuous professional development.
 
 ---
 
-##### Courses and Workshops
+## Courses and Workshops
 
 **Completed**
 - [x] Rust Async Programming (Udemy) - Dec 2024
@@ -47,7 +47,7 @@ Structured plan for continuous professional development.
 
 ---
 
-##### Conference and Community Goals
+## Conference and Community Goals
 
 **2025 Targets**
 - Attend RustConf or similar Rust conference
@@ -61,7 +61,7 @@ Structured plan for continuous professional development.
 
 ---
 
-##### Skills Development Tracker
+## Skills Development Tracker
 
 | Skill | Current Level | Target Level | Timeline |
 |-------|---------------|--------------|----------|

@@ -196,7 +196,7 @@ fn test_generate_html_from_content_with_includes() {
 
 ## Section
 
-Content in: [include]({})
+Include: [include]({})
 "#,
         include_path.to_str().unwrap()
     );
