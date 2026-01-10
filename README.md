@@ -1,6 +1,7 @@
 # 📜 Vellum
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Gitea Release](https://img.shields.io/badge/Version-v0.1.0-31c754.svg)](https://github.com/xuedi/vellum/releases)
+[![EUPL Licence](https://img.shields.io/badge/Licence-EUPL_v1.2-31c754.svg)](https://eupl.eu/1.2/en)
 [![Rust](https://img.shields.io/badge/rust-1.70%2B-orange.svg)](https://www.rust-lang.org/)
 [![Built with Just](https://img.shields.io/badge/built%20with-just-blue.svg)](https://github.com/casey/just)
 
