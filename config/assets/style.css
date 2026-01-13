@@ -432,6 +432,8 @@ body {
     font-weight: 600;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--content-border);
 }
 
 .panel-content h3:first-child {
