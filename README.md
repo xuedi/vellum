@@ -131,13 +131,13 @@ Create professional, color-coded skill tables. Vellum automatically detects tabl
 ```markdown
 ## My Skills
 
-| Technology | Rating | Description           |
-|------------|--------|-----------------------|
-| **Languages**  |    |                       |
-| Rust       | 9      | Expert level          |
-| Python     | 7      | Automation & Scripting|
-| **Tools**  |        |                       |
-| Docker     | 8      | WIP - Optimizing CI   |
+| Technology     | Rating | Description            |
+|----------------|--------|------------------------|
+| **Languages**  |        |                        |
+| Rust           | 9      | Expert level           |
+| Python         | 7      | Automation & Scripting |
+| **Tools**      |        |                        |
+| Docker         | 8      | WIP - Optimizing CI    |
 ```
 
 Column detection is flexible:
@@ -153,6 +153,19 @@ Use dynamic variables that update every time you build:
 - `{{currentYear}}`: Current year (YYYY)
 - `{{currentDateTime}}`: Current month and year
 - `{{lastUpdate:file.md}}`: Modification date of a specific file
+
+## Examples
+
+Check out the demo files in the `demo/` directory to see Vellum in action:
+
+- **[portfolio.html](https://htmlpreview.github.io/?https://github.com/xuedi/vellum/blob/main/demo/portfolio.html)** - Professional portfolio showcasing skills and experience
+- **[vellum.html](https://htmlpreview.github.io/?https://github.com/xuedi/vellum/blob/main/demo/vellum.html)** - Documentation-style page demonstrating Vellum's features
+- **[rockband.html](https://htmlpreview.github.io/?https://github.com/xuedi/vellum/blob/main/demo/rockband.html)** - Creative example with a different visual style
+
+Generate these demos yourself with:
+```bash
+just demo
+```
 
 ## License
 
