@@ -39,13 +39,13 @@ vellum/
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        INPUT                                     │
+│                        INPUT                                    │
 │  Markdown file + Logo + Config (title, dropdown section)        │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  1. PROCESS INCLUDES                                             │
+│  1. PROCESS INCLUDES                                            │
 │     - Resolve `Include: (path.md)` directives                   │
 │     - Recursively embed referenced markdown files               │
 │     - Adjust heading levels for included content                │
@@ -53,13 +53,13 @@ vellum/
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  2. SUBSTITUTE VARIABLES                                         │
+│  2. SUBSTITUTE VARIABLES                                        │
 │     - Replace {{currentDate}}, {{currentYear}}, etc.            │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  3. TRANSFORM MARKERS                                            │
+│  3. TRANSFORM MARKERS                                           │
 │     - Convert `<! tag` to styled achievement markers            │
 │     - Apply colored_tags regex patterns from config             │
 │     - Transform skill matrix tables with level coloring         │
@@ -67,7 +67,7 @@ vellum/
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  4. PARSE DOCUMENT STRUCTURE                                     │
+│  4. PARSE DOCUMENT STRUCTURE                                    │
 │     - Extract H2 sections → nav buttons                         │
 │     - Extract H3 under dropdown section → dropdown items        │
 │     - Normalize heading levels per panel (H4→H3 for dropdown)   │
@@ -76,7 +76,7 @@ vellum/
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  5. RENDER HTML                                                  │
+│  5. RENDER HTML                                                 │
 │     - Convert each panel's markdown to HTML                     │
 │     - Generate navigation (buttons + dropdown)                  │
 │     - Embed logo as base64 data URI                             │
@@ -85,7 +85,7 @@ vellum/
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                        OUTPUT                                    │
+│                        OUTPUT                                   │
 │  Single self-contained HTML file                                │
 └─────────────────────────────────────────────────────────────────┘
 ```
