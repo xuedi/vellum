@@ -8,25 +8,25 @@ Goals aligned with team objectives and personal development.
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
-| Improve system reliability | Reduce P1 incidents by 25% | On Track | 75% |
-| Learn async Rust patterns | Complete 3 async refactors | Complete | 100% |
-| Reduce technical debt | Close 10 legacy issues | At Risk | 40% |
+| Improve system reliability | Reduce P1 incidents by 25% | [WIP] | 75% |
+| Learn async Rust patterns | Complete 3 async refactors | [DONE] | 100% |
+| Reduce technical debt | Close 10 legacy issues | [BLOCKED] | 40% |
 
 ### Professional Development Goals
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
-| Improve presentation skills | Lead 2 team demos | On Track | 50% |
-| Expand cloud knowledge | AWS Solutions Architect cert | On Track | 60% |
-| Build mentoring experience | Onboard 1 new team member | Complete | 100% |
+| Improve presentation skills | Lead 2 team demos | [WIP] | 50% |
+| Expand cloud knowledge | AWS Solutions Architect cert | [WIP] | 60% |
+| Build mentoring experience | Onboard 1 new team member | [DONE] | 100% |
 
 ### Team Contribution Goals
 
 | Goal | Key Results | Status | Progress |
 |------|-------------|--------|----------|
-| Improve code review quality | Review 20+ PRs with detailed feedback | On Track | 85% |
-| Knowledge sharing | Write 2 internal blog posts | Behind | 25% |
-| Process improvement | Propose 1 workflow enhancement | Complete | 100% |
+| Improve code review quality | Review 20+ PRs with detailed feedback | [WIP] | 85% |
+| Knowledge sharing | Write 2 internal blog posts | [BLOCKED] | 25% |
+| Process improvement | Propose 1 workflow enhancement | [DONE] | 100% |
 
 ---
 

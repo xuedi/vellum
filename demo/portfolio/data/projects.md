@@ -5,7 +5,7 @@
 A web application for task management built with modern technologies.
 
 - **Stack**: Rust, PostgreSQL, React
-- **Status**: Production
+- **Status**: [DONE] Production
 - **Impact**: 50% reduction in manual tracking
 
 ## Project Beta
@@ -13,7 +13,7 @@ A web application for task management built with modern technologies.
 Internal tooling for automated deployment pipelines.
 
 - **Stack**: Python, Docker, GitHub Actions
-- **Status**: Maintenance
+- **Status**: [DONE] Maintenance
 - **Impact**: Reduced deployment time from hours to minutes
 
 ## Project Gamma
@@ -21,5 +21,5 @@ Internal tooling for automated deployment pipelines.
 Documentation generator for technical specifications.
 
 - **Stack**: Rust, Markdown, HTML
-- **Status**: Active Development
+- **Status**: [WIP] Active Development
 - **Impact**: Unified documentation across teams

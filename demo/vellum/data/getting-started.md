@@ -1,4 +1,6 @@
-# Getting Stated
+# Getting Started
+
+This guide covers Vellum v0.1.0 installation and setup.
 
 ## Installation
 

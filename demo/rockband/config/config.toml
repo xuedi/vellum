@@ -14,4 +14,4 @@ markdown = "demo/rockband/data/index.md"
 logo = "demo/rockband/config/logo.png"
 
 # Output
-output = "demo-rockband.html"
+output = "demo/rockband.html"

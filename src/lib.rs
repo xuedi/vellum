@@ -5,10 +5,11 @@ pub mod renderer;
 use assets::{embed_image, Assets};
 use parser::{
     parse_document_structure, process_includes, substitute_variables,
-    transform_achievement_markers, transform_skill_matrices,
+    transform_achievement_markers, transform_colored_tags, transform_skill_matrices,
 };
 use renderer::{HtmlRenderer, RenderError};
 use serde::Deserialize;
+use std::collections::HashMap;
 use std::path::Path;
 use thiserror::Error;
 
@@ -19,6 +20,7 @@ pub struct GeneratorConfig {
     pub title: String,
     pub output_path: String,
     pub dropdown_section: Option<String>,
+    pub colored_tags: HashMap<String, String>,
 }
 
 impl Default for GeneratorConfig {
@@ -29,6 +31,7 @@ impl Default for GeneratorConfig {
             title: "My Portfolio".to_string(),
             output_path: "output/index.html".to_string(),
             dropdown_section: Some("Projects".to_string()),
+            colored_tags: HashMap::new(),
         }
     }
 }
@@ -37,6 +40,8 @@ impl Default for GeneratorConfig {
 struct ConfigFile {
     document: DocumentConfig,
     paths: PathsConfig,
+    #[serde(default)]
+    colored_tags: HashMap<String, String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -81,6 +86,7 @@ impl GeneratorConfig {
             title: config_file.document.title,
             output_path: config_file.paths.output,
             dropdown_section,
+            colored_tags: config_file.colored_tags,
         })
     }
 }
@@ -127,6 +133,7 @@ pub fn generate_html_from_content(
     title: &str,
     logo_data_uri: &str,
     dropdown_section: Option<&str>,
+    colored_tags: &HashMap<String, String>,
     assets: &Assets,
 ) -> Result<(Vec<u8>, GenerationStats), GeneratorError> {
     let mut stats = GenerationStats {
@@ -145,14 +152,17 @@ pub fn generate_html_from_content(
     let transformed = transform_achievement_markers(&with_variables);
     stats.achievement_markers = transformed.matches("achievement-marker").count();
 
-    // Step 4: Transform skill matrices
-    let with_skill_matrices = transform_skill_matrices(&transformed);
+    // Step 4: Transform colored tags
+    let with_colored_tags = transform_colored_tags(&transformed, colored_tags);
 
-    // Step 5: Parse document structure (extracts sections and dropdown items)
+    // Step 5: Transform skill matrices
+    let with_skill_matrices = transform_skill_matrices(&with_colored_tags);
+
+    // Step 6: Parse document structure (extracts sections and dropdown items)
     let doc_structure = parse_document_structure(&with_skill_matrices, dropdown_section);
     stats.section_count = doc_structure.nav_buttons.len() + doc_structure.dropdown_items.len();
 
-    // Step 6: Render using the new panel-based approach
+    // Step 7: Render using the new panel-based approach
     let renderer = HtmlRenderer::new();
     let output = renderer.render_from_structure(&doc_structure, title, logo_data_uri, assets)?;
 
@@ -178,7 +188,7 @@ pub fn generate_html(config: &GeneratorConfig, assets: &Assets) -> Result<(Vec<u
     let logo_data_uri = embed_image(&config.logo_path)?;
 
     let dropdown_section = config.dropdown_section.as_deref();
-    generate_html_from_content(&markdown, &base_path, &config.title, &logo_data_uri, dropdown_section, assets)
+    generate_html_from_content(&markdown, &base_path, &config.title, &logo_data_uri, dropdown_section, &config.colored_tags, assets)
 }
 
 pub fn validate_inputs(config: &GeneratorConfig) -> Result<(), GeneratorError> {
@@ -219,7 +229,7 @@ mod tests {
         let logo_uri = "data:image/png;base64,AAAA";
         let assets = test_assets();
 
-        let result = generate_html_from_content(markdown, ".", "Test Doc", logo_uri, None, &assets);
+        let result = generate_html_from_content(markdown, ".", "Test Doc", logo_uri, None, &HashMap::new(), &assets);
         assert!(result.is_ok());
 
         let (html, stats) = result.unwrap();
@@ -234,7 +244,7 @@ mod tests {
         let logo_uri = "data:image/png;base64,AAAA";
         let assets = test_assets();
 
-        let (_, stats) = generate_html_from_content(markdown, ".", "Test", logo_uri, None, &assets).unwrap();
+        let (_, stats) = generate_html_from_content(markdown, ".", "Test", logo_uri, None, &HashMap::new(), &assets).unwrap();
         assert_eq!(stats.achievement_markers, 1);
     }
 
@@ -244,7 +254,7 @@ mod tests {
         let logo_uri = "data:image/png;base64,AAAA";
         let assets = test_assets();
 
-        let (_, stats) = generate_html_from_content(markdown, ".", "Test", logo_uri, None, &assets).unwrap();
+        let (_, stats) = generate_html_from_content(markdown, ".", "Test", logo_uri, None, &HashMap::new(), &assets).unwrap();
         assert_eq!(stats.section_count, 3);
     }
 
@@ -264,6 +274,7 @@ mod tests {
             title: "Test".to_string(),
             output_path: "output/test.html".to_string(),
             dropdown_section: None,
+            colored_tags: HashMap::new(),
         };
         let result = validate_inputs(&config);
         assert!(matches!(result, Err(GeneratorError::InputNotFound(_))));

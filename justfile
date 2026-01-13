@@ -78,5 +78,4 @@ demo: build
     @echo "Generating demo-rockband.html..."
     cargo run -- --config demo/rockband/config
     @echo ""
-    @echo "Demo files generated:"
-    @ls -la demo-*.html 2>/dev/null || echo "  (no demo files found)"
+    @echo "Demo files upddated"

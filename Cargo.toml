@@ -13,6 +13,7 @@ chrono = "0.4"            # Date/time for template variables
 toml = "0.8"              # Config file parsing
 serde = { version = "1.0", features = ["derive"] }  # Serialization for config
 dirs = "5.0"              # XDG directory paths
+regex = "1.10"            # Pattern matching for colored tags
 
 [dev-dependencies]
 tempfile = "3"            # Temporary files for integration tests

@@ -14,4 +14,10 @@ markdown = "demo/portfolio/data/index.md"
 logo = "demo/portfolio/config/logo.png"
 
 # Output
-output = "demo-portfolio.html"
+output = "demo/portfolio.html"
+
+# Optional: Replace text patterns with colored tags
+[colored_tags]
+"\\[DONE\\]" = "green"
+"\\[WIP\\]" = "yellow"
+"\\[BLOCKED\\]" = "red"

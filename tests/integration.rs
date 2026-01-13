@@ -3,6 +3,7 @@
 //! These tests use real temporary files to test the full pipeline.
 
 use vellum::{generate_html, generate_html_from_content, validate_inputs, GeneratorConfig, assets::Assets};
+use std::collections::HashMap;
 use std::fs;
 use tempfile::TempDir;
 
@@ -66,6 +67,7 @@ This is a test document.
         title: "Test Document".to_string(),
         output_path: dir.path().join("output.html").to_str().unwrap().to_string(),
         dropdown_section: None,
+        colored_tags: HashMap::new(),
     };
 
     // Validate inputs
@@ -104,6 +106,7 @@ fn test_validate_inputs_missing_markdown() {
         title: "Test".to_string(),
         output_path: "output.html".to_string(),
         dropdown_section: None,
+        colored_tags: HashMap::new(),
     };
 
     let result = validate_inputs(&config);
@@ -124,6 +127,7 @@ fn test_validate_inputs_missing_logo() {
         title: "Test".to_string(),
         output_path: "output.html".to_string(),
         dropdown_section: None,
+        colored_tags: HashMap::new(),
     };
 
     let result = validate_inputs(&config);
@@ -146,6 +150,7 @@ fn test_validate_inputs_both_exist() {
         title: "Test".to_string(),
         output_path: "output.html".to_string(),
         dropdown_section: None,
+        colored_tags: HashMap::new(),
     };
 
     assert!(validate_inputs(&config).is_ok());
@@ -166,7 +171,7 @@ Some details here.
     let logo_uri = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
     let assets = test_assets();
 
-    let result = generate_html_from_content(markdown, ".", "Test Title", logo_uri, None, &assets);
+    let result = generate_html_from_content(markdown, ".", "Test Title", logo_uri, None, &HashMap::new(), &assets);
     assert!(result.is_ok());
 
     let (html, stats) = result.unwrap();
@@ -204,7 +209,7 @@ Include: [include]({})
     let logo_uri = "data:image/png;base64,AAAA";
     let assets = test_assets();
 
-    let result = generate_html_from_content(&markdown, ".", "Test", logo_uri, None, &assets);
+    let result = generate_html_from_content(&markdown, ".", "Test", logo_uri, None, &HashMap::new(), &assets);
     assert!(result.is_ok());
 
     let (html, stats) = result.unwrap();
@@ -221,7 +226,7 @@ fn test_generate_html_from_content_empty_document() {
     let logo_uri = "data:image/png;base64,AAAA";
     let assets = test_assets();
 
-    let result = generate_html_from_content(markdown, ".", "Empty", logo_uri, None, &assets);
+    let result = generate_html_from_content(markdown, ".", "Empty", logo_uri, None, &HashMap::new(), &assets);
     assert!(result.is_ok());
 
     let (html, stats) = result.unwrap();
@@ -238,6 +243,7 @@ fn test_generate_html_missing_file() {
         title: "Test".to_string(),
         output_path: "output.html".to_string(),
         dropdown_section: None,
+        colored_tags: HashMap::new(),
     };
     let assets = test_assets();
 

@@ -61,6 +61,7 @@ vellum/
 ┌─────────────────────────────────────────────────────────────────┐
 │  3. TRANSFORM MARKERS                                            │
 │     - Convert `<! tag` to styled achievement markers            │
+│     - Apply colored_tags regex patterns from config             │
 │     - Transform skill matrix tables with level coloring         │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -136,6 +137,15 @@ Include: (path/to/file.md)
 - Completed feature <! milestone
 - Fixed bug <! fix
 ```
+
+### Colored Tags
+Config-defined regex patterns are replaced with styled tags:
+```toml
+[colored_tags]
+"KW\\d{2}-OK" = "green"
+"KW\\d{2}-FAIL" = "red"
+```
+Text matching these patterns becomes `<span class="color-tag color-tag-green">KW02-OK</span>`.
 
 ### Skill Matrix
 Tables under headings containing "skill" or "matrix" are auto-styled with level-based coloring (0-10 scale, red→yellow→green gradient).

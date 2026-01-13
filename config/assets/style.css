@@ -334,6 +334,50 @@ body {
     font-weight: 500;
 }
 
+/* Colored tags */
+.color-tag {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85em;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.color-tag-green {
+    background: #22c55e;
+    color: white;
+}
+
+.color-tag-grey {
+    background: #6b7280;
+    color: white;
+}
+
+.color-tag-red {
+    background: #ef4444;
+    color: white;
+}
+
+.color-tag-blue {
+    background: #3b82f6;
+    color: white;
+}
+
+.color-tag-yellow {
+    background: #eab308;
+    color: black;
+}
+
+.color-tag-orange {
+    background: #f97316;
+    color: white;
+}
+
+.color-tag-purple {
+    background: #a855f7;
+    color: white;
+}
+
 /* Skill Matrix table */
 .skill-matrix {
     width: 100%;

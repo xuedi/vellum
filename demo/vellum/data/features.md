@@ -1,5 +1,7 @@
 # Features
 
+Vellum v0.1.0 includes the following features:
+
 ## Self-Contained Output
 
 Everything gets embedded into a single HTML file. CSS styles, JavaScript for navigation, your logo as base64, and all content live together. No broken links, no missing assets, no dependency on external servers.
@@ -19,6 +21,12 @@ Generated documents work without internet access. Share via email, USB drives, o
 ## Template Variables
 
 Use built-in variables like `{{CURRENT_YEAR}}` or `{{CURRENT_DATE}}` in your content. Vellum substitutes them during generation, keeping your documents fresh.
+
+## Colored Tags
+
+Define regex patterns in your config to automatically highlight text as colored tags. Perfect for status indicators, version numbers, or any recurring patterns you want to stand out.
+
+Available colors: green, grey, red, blue, yellow, orange, purple.
 
 ## Dropdown Navigation
 

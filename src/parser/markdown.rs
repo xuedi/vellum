@@ -1,5 +1,6 @@
 use chrono::Local;
 use pulldown_cmark::{html, Options, Parser};
+use regex::Regex;
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -79,6 +80,30 @@ pub fn transform_achievement_markers(markdown: &str) -> String {
             result.push_str(line);
         }
         result.push('\n');
+    }
+
+    result
+}
+
+pub fn transform_colored_tags(markdown: &str, colored_tags: &HashMap<String, String>) -> String {
+    if colored_tags.is_empty() {
+        return markdown.to_string();
+    }
+
+    let mut result = markdown.to_string();
+
+    for (pattern, color) in colored_tags {
+        if let Ok(re) = Regex::new(pattern) {
+            result = re
+                .replace_all(&result, |caps: &regex::Captures| {
+                    let matched = &caps[0];
+                    format!(
+                        "<span class=\"color-tag color-tag-{}\">{}</span>",
+                        color, matched
+                    )
+                })
+                .to_string();
+        }
     }
 
     result
@@ -388,5 +413,36 @@ mod tests {
         let input = "- [x] Done\n- [ ] Todo";
         let output = parse_markdown(input);
         assert!(output.contains("checked"));
+    }
+
+    #[test]
+    fn test_colored_tags_basic() {
+        let mut tags = HashMap::new();
+        tags.insert(r"KW\d{2}-OK".to_string(), "green".to_string());
+        tags.insert(r"KW\d{2}-FAIL".to_string(), "red".to_string());
+
+        let input = "Results: KW02-OK and KW03-FAIL";
+        let output = transform_colored_tags(input, &tags);
+
+        assert!(output.contains(r#"<span class="color-tag color-tag-green">KW02-OK</span>"#));
+        assert!(output.contains(r#"<span class="color-tag color-tag-red">KW03-FAIL</span>"#));
+    }
+
+    #[test]
+    fn test_colored_tags_empty_config() {
+        let tags = HashMap::new();
+        let input = "Results: KW02-OK";
+        let output = transform_colored_tags(input, &tags);
+        assert_eq!(output, input);
+    }
+
+    #[test]
+    fn test_colored_tags_no_match() {
+        let mut tags = HashMap::new();
+        tags.insert(r"KW\d{2}-OK".to_string(), "green".to_string());
+
+        let input = "No matches here";
+        let output = transform_colored_tags(input, &tags);
+        assert_eq!(output, input);
     }
 }

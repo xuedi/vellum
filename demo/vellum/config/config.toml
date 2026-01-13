@@ -14,5 +14,9 @@ markdown = "demo/vellum/data/index.md"
 logo = "demo/vellum/config/logo.png"
 
 # Output
-output = "demo-vellum.html"
+output = "demo/vellum.html"
+
+# Optional: Replace text patterns with colored tags
+[colored_tags]
+"v\\d+\\.\\d+\\.\\d+" = "blue"
 

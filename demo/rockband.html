@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust & Roll - Official Band Page</title>
+    <style>
+/*
+ * Vellum - Slate & Teal Theme
+ * Color scheme: Slate gray with teal accent
+ */
+
+:root {
+    --bg-color: #1e293b;
+    --card-bg: #334155;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --accent: #0f172a;
+    --highlight: #2dd4bf;
+    --border-color: #475569;
+    --success: #14b8a6;
+
+    /* Paper-style content area */
+    --content-bg: #ffffff;
+    --content-text: #1a1a1a;
+    --content-text-muted: #666666;
+    --content-border: #e0e0e0;
+    --content-accent: #f5f5f5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header with logo */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--highlight);
+}
+
+.header img {
+    height: 50px;
+    width: auto;
+}
+
+.header h1 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Controls */
+.controls {
+    position: sticky;
+    top: 0;
+    background: var(--bg-color);
+    padding: 15px 0;
+    margin-bottom: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#nav-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.controls button {
+    padding: 8px 16px;
+    background: var(--accent);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.controls button:hover {
+    background: var(--highlight);
+    color: black;
+}
+
+.controls button.active {
+    background: var(--highlight);
+    color: black;
+}
+
+/* Dropdown - right aligned */
+#dropdown {
+    margin-left: auto;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    min-width: 200px;
+}
+
+#dropdown:hover,
+#dropdown:focus {
+    background: var(--highlight);
+    color: black;
+    outline: none;
+    border-color: var(--highlight);
+}
+
+#dropdown option {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 8px;
+}
+
+#dropdown option:disabled {
+    color: var(--highlight);
+    font-weight: 500;
+}
+
+/* Collapsible sections */
+.section {
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+    background: #4A4B6A;
+}
+
+.section-header:hover {
+    background: #3a3b5a;
+}
+
+.section-header h1,
+.section-header h2,
+.section-header h3,
+.section-header h4,
+.section-header h5,
+.section-header h6 {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.section-header h1 { font-size: 1.8em; color: #ffffff; font-weight: 600; }
+.section-header h2 { font-size: 1.5em; color: #ffffff; font-weight: 600; }
+.section-header h3 { font-size: 1.25em; color: var(--text-color); font-weight: 500; }
+.section-header h4 { font-size: 1.1em; color: var(--text-muted); font-weight: 500; }
+.section-header h5,
+.section-header h6 { font-size: 1em; color: var(--text-muted); font-weight: 400; }
+
+.toggle-icon {
+    font-size: 12px;
+    margin-right: 10px;
+    transition: transform 0.2s;
+    color: var(--text-muted);
+}
+
+.section.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.section-content {
+    padding: 15px 20px 20px 35px;
+    display: block;
+    background: var(--content-bg);
+    color: var(--content-text);
+    border-radius: 0 0 8px 8px;
+}
+
+.section.collapsed > .section-content {
+    display: none;
+}
+
+/* Subsection panels for Related Documents */
+.subsection-panel {
+    display: none;
+}
+
+.subsection-panel.active {
+    display: block;
+}
+
+/* Nested headers inside section content */
+.section-content h3 {
+    font-size: 1.25em;
+    color: var(--content-text);
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--content-border);
+}
+
+.section-content h4 {
+    font-size: 1.1em;
+    color: #333333;
+    font-weight: 600;
+    margin: 15px 0 8px 0;
+}
+
+.section-content h5,
+.section-content h6 {
+    font-size: 1em;
+    color: var(--content-text-muted);
+    font-weight: 500;
+    margin: 10px 0 5px 0;
+}
+
+/* Content styling */
+.section-content p {
+    margin: 10px 0;
+}
+
+.section-content ul,
+.section-content ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+
+.section-content li {
+    margin: 5px 0;
+}
+
+.section-content strong {
+    color: var(--content-text);
+    font-weight: 600;
+}
+
+.section-content em {
+    color: var(--content-text-muted);
+    font-style: italic;
+}
+
+.section-content code {
+    background: var(--content-accent);
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #333333;
+}
+
+.section-content pre {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.section-content pre code {
+    background: transparent;
+    color: inherit;
+}
+
+.section-content blockquote {
+    border-left: 3px solid var(--highlight);
+    padding-left: 15px;
+    margin: 10px 0;
+    color: var(--content-text-muted);
+    background: var(--content-accent);
+    padding: 10px 15px;
+    border-radius: 0 5px 5px 0;
+}
+
+.section-content a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.section-content a:hover {
+    text-decoration: underline;
+    color: #004499;
+}
+
+.section-content hr {
+    border: none;
+    border-top: 1px solid var(--content-border);
+    margin: 20px 0;
+}
+
+.section-content table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+
+.section-content th,
+.section-content td {
+    border: 1px solid var(--content-border);
+    padding: 10px;
+    text-align: left;
+}
+
+.section-content th {
+    background: var(--content-accent);
+    font-weight: 600;
+    color: var(--content-text);
+}
+
+/* Achievement markers */
+.achievement-marker {
+    background: var(--highlight);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+/* Colored tags */
+.color-tag {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85em;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.color-tag-green {
+    background: #22c55e;
+    color: white;
+}
+
+.color-tag-grey {
+    background: #6b7280;
+    color: white;
+}
+
+.color-tag-red {
+    background: #ef4444;
+    color: white;
+}
+
+.color-tag-blue {
+    background: #3b82f6;
+    color: white;
+}
+
+.color-tag-yellow {
+    background: #eab308;
+    color: black;
+}
+
+.color-tag-orange {
+    background: #f97316;
+    color: white;
+}
+
+.color-tag-purple {
+    background: #a855f7;
+    color: white;
+}
+
+/* Skill Matrix table */
+.skill-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+
+.skill-matrix th,
+.skill-matrix td {
+    border: 1px solid var(--content-border);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.skill-matrix th {
+    background: var(--content-accent);
+    font-weight: 600;
+    color: var(--content-text);
+}
+
+.skill-matrix .category-row td {
+    background: var(--content-accent);
+    color: var(--content-text);
+    font-weight: 600;
+    text-align: center;
+    padding: 10px;
+}
+
+/* WIP marker in skill matrix */
+.wip-marker {
+    background: var(--highlight);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75em;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.skill-matrix td:nth-child(2) {
+    text-align: center;
+    width: 60px;
+}
+
+/* Skill level colors - pastel gradient from red to green */
+.level-0, .level-1, .level-2, .level-3 {
+    background: #f8d7da; /* pastel red */
+}
+.level-4, .level-5 {
+    background: #fff3cd; /* pastel yellow */
+}
+.level-6 {
+    background: #ffeeba; /* pastel orange-yellow */
+}
+.level-7 {
+    background: #d4edda; /* pastel light green */
+}
+.level-8 {
+    background: #c3e6cb; /* pastel green */
+}
+.level-9, .level-10 {
+    background: #b1dfbb; /* pastel darker green */
+}
+
+/* Pre-rendered panels */
+.panel {
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+.panel > h2 {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin: 0;
+    background: #4A4B6A;
+    font-size: 1.5em;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.panel-content {
+    padding: 15px 20px 20px 35px;
+    background: var(--content-bg);
+    color: var(--content-text);
+    border-radius: 0 0 8px 8px;
+}
+
+.panel-content h3 {
+    font-size: 1.25em;
+    color: var(--content-text);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--content-border);
+}
+
+.panel-content h3:first-child {
+    margin-top: 0;
+}
+
+.panel-content h4 {
+    font-size: 1.1em;
+    color: #333333;
+    font-weight: 600;
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+}
+
+.panel-content h5,
+.panel-content h6 {
+    font-size: 1em;
+    color: var(--content-text-muted);
+    font-weight: 500;
+    margin: 10px 0 5px 0;
+}
+
+.panel-content p {
+    margin: 10px 0;
+}
+
+.panel-content ul,
+.panel-content ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+
+.panel-content li {
+    margin: 5px 0;
+}
+
+.panel-content strong {
+    color: var(--content-text);
+    font-weight: 600;
+}
+
+.panel-content em {
+    color: var(--content-text-muted);
+    font-style: italic;
+}
+
+.panel-content code {
+    background: var(--content-accent);
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #333333;
+}
+
+.panel-content pre {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.panel-content pre code {
+    background: transparent;
+    color: inherit;
+}
+
+.panel-content blockquote {
+    border-left: 3px solid var(--highlight);
+    padding-left: 15px;
+    margin: 10px 0;
+    color: var(--content-text-muted);
+    background: var(--content-accent);
+    padding: 10px 15px;
+    border-radius: 0 5px 5px 0;
+}
+
+.panel-content a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.panel-content a:hover {
+    text-decoration: underline;
+    color: #004499;
+}
+
+.panel-content hr {
+    border: none;
+    border-top: 1px solid var(--content-border);
+    margin: 20px 0;
+}
+
+.panel-content table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+
+.panel-content th,
+.panel-content td {
+    border: 1px solid var(--content-border);
+    padding: 10px;
+    text-align: left;
+}
+
+.panel-content th {
+    background: var(--content-accent);
+    font-weight: 600;
+    color: var(--content-text);
+}
+
+.hidden {
+    display: none !important;
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAUElEQVR42u3PQQkAAAgEsCugyeyfxwi+hcEKLNXzWgQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQErsACWh1wW5pIvbgAAAAASUVORK5CYII=" alt="Logo">
+        <h1>Rust & Roll - Official Band Page</h1>
+    </div>
+
+    <div class="controls">
+        <div id="nav-buttons">
+        <button data-panel="about">About</button>
+        <button data-panel="members">Members</button>
+        <button data-panel="discography">Discography</button>
+        <button data-panel="tour">Tour</button>
+        <button data-panel="press">Press</button>
+        <button data-panel="contact">Contact</button>
+        <select id="dropdown">
+            <option disabled selected>Archive</option>
+            <option data-panel="music-videos">Music Videos</option>
+            <option data-panel="interviews">Interviews</option>
+            <option data-panel="merchandise">Merchandise</option>
+        </select>
+        </div>
+    </div>
+
+    <div id="content">
+<div class="panel" id="panel-about">
+    <h2>About</h2>
+    <div class="panel-content">
+        <p><strong>Rust &amp; Roll</strong> is a four-piece alternative rock band formed in Berlin in 2019. Known for their energetic live performances and lyrics about software development, the band has carved out a unique niche in the tech music scene.</p>
+<table><thead><tr><th>Info</th><th>Details</th></tr></thead><tbody>
+<tr><td>Genre</td><td>Alternative Rock / Nerd Core</td></tr>
+<tr><td>Origin</td><td>Berlin, Germany</td></tr>
+<tr><td>Years Active</td><td>2019 - present</td></tr>
+<tr><td>Label</td><td>Open Source Records</td></tr>
+<tr><td>Website Updated</td><td>{{CURRENT_DATE}}</td></tr>
+</tbody></table>
+<blockquote>
+<p>"We write code by day and rock by night. Our music is the soundtrack to debugging at 3 AM." - Compiler Chris</p>
+</blockquote>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-members">
+    <h2>Members</h2>
+    <div class="panel-content">
+        <h3>Compiler Chris - Lead Vocals &amp; Guitar</h3>
+<p>The founder and frontman of Rust &amp; Roll. Chris started coding at age 12 and picked up guitar at 15. His unique vocal style combines melodic verses with screamed choruses about memory safety.</p>
+<ul>
+<li><strong>Real Name:</strong> Christian Mueller</li>
+<li><strong>Instruments:</strong> Vocals, Electric Guitar, Acoustic Guitar</li>
+<li><strong>Influences:</strong> Foo Fighters, System of a Down, The Prodigy</li>
+</ul>
+<h3>Borrow Betty - Bass &amp; Backing Vocals</h3>
+<p>Betty brings the low end with thunderous bass lines inspired by prog rock and electronic music. Her background in music theory gives the band its complex time signatures.</p>
+<ul>
+<li><strong>Real Name:</strong> Elisabeth Braun</li>
+<li><strong>Instruments:</strong> Bass, Synth, Backing Vocals</li>
+<li><strong>Influences:</strong> Tool, Muse, Daft Punk</li>
+</ul>
+<h3>Async Andy - Lead Guitar</h3>
+<p>The shredder of the group, Andy is known for his lightning-fast solos and innovative use of guitar effects. He builds his own pedals in his spare time.</p>
+<ul>
+<li><strong>Real Name:</strong> Andreas Schmidt</li>
+<li><strong>Instruments:</strong> Lead Guitar, Effects</li>
+<li><strong>Influences:</strong> Van Halen, Buckethead, Plini</li>
+</ul>
+<h3>Panic Pete - Drums &amp; Percussion</h3>
+<p>Pete's powerful drumming drives the band's intense sound. A former jazz drummer, he brings technical precision with punk rock energy.</p>
+<ul>
+<li><strong>Real Name:</strong> Peter Hoffman</li>
+<li><strong>Instruments:</strong> Drums, Percussion, Electronic Pads</li>
+<li><strong>Influences:</strong> Neil Peart, Dave Grohl, Jojo Mayer</li>
+</ul>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-discography">
+    <h2>Discography</h2>
+    <div class="panel-content">
+        <h3>Albums</h3>
+<h4>"Compile Time" (2020)</h4>
+<p>Their debut album exploring themes of learning to code and late-night debugging sessions.</p>
+<table><thead><tr><th>Track</th><th>Title</th><th>Duration</th></tr></thead><tbody>
+<tr><td>1</td><td>Hello World</td><td>3:42</td></tr>
+<tr><td>2</td><td>Segmentation Fault</td><td>4:15</td></tr>
+<tr><td>3</td><td>The Compiler Knows</td><td>3:58</td></tr>
+<tr><td>4</td><td>Infinite Loop</td><td>5:23</td></tr>
+<tr><td>5</td><td>Stack Overflow (Ballad)</td><td>4:47</td></tr>
+<tr><td>6</td><td>Release Build</td><td>3:31</td></tr>
+<tr><td>7</td><td>Runtime Error</td><td>4:02</td></tr>
+<tr><td>8</td><td>Memory Leak</td><td>6:15</td></tr>
+</tbody></table>
+<p><strong>Reviews:</strong></p>
+<ul>
+<li>"A surprisingly catchy debut" - TechCrunch</li>
+<li>"Finally, music for the command line generation" - Wired</li>
+</ul>
+<hr />
+<h4>"Fearless Concurrency" (2022)</h4>
+<p>The sophomore album that cemented their cult following. Heavier and more experimental.</p>
+<table><thead><tr><th>Track</th><th>Title</th><th>Duration</th></tr></thead><tbody>
+<tr><td>1</td><td>Ownership</td><td>4:12</td></tr>
+<tr><td>2</td><td>Borrow Checker Blues</td><td>3:55</td></tr>
+<tr><td>3</td><td>Lifetime Annotations</td><td>5:08</td></tr>
+<tr><td>4</td><td>Unsafe Block</td><td>4:33</td></tr>
+<tr><td>5</td><td>Arc&lt;Mutex<Heart>&gt;</td><td>4:21</td></tr>
+<tr><td>6</td><td>Deadlock</td><td>6:42</td></tr>
+<tr><td>7</td><td>Channel Surfing</td><td>3:47</td></tr>
+<tr><td>8</td><td>Zero Cost Abstraction</td><td>5:15</td></tr>
+<tr><td>9</td><td>Cargo Run</td><td>4:08</td></tr>
+</tbody></table>
+<p><strong>Reviews:</strong></p>
+<ul>
+<li>"Their best work yet" - Rolling Stone</li>
+<li>"Rust &amp; Roll have found their sound" - Pitchfork</li>
+</ul>
+<hr />
+<h4>"Production Ready" (2024)</h4>
+<p>The latest album. A mature, polished sound without losing their edge.</p>
+<table><thead><tr><th>Track</th><th>Title</th><th>Duration</th></tr></thead><tbody>
+<tr><td>1</td><td>CI/CD</td><td>3:38</td></tr>
+<tr><td>2</td><td>Deploy Friday</td><td>4:25</td></tr>
+<tr><td>3</td><td>The Monolith</td><td>7:12</td></tr>
+<tr><td>4</td><td>Microservices (Interlude)</td><td>1:45</td></tr>
+<tr><td>5</td><td>Docker Dreams</td><td>4:52</td></tr>
+<tr><td>6</td><td>Kubernetes Chaos</td><td>5:33</td></tr>
+<tr><td>7</td><td>On-Call Tonight</td><td>4:18</td></tr>
+<tr><td>8</td><td>Incident Response</td><td>3:55</td></tr>
+<tr><td>9</td><td>Post-Mortem</td><td>6:08</td></tr>
+<tr><td>10</td><td>Ship It</td><td>4:42</td></tr>
+</tbody></table>
+<p><strong>Reviews:</strong></p>
+<ul>
+<li>"A triumphant third album" - NME</li>
+<li>"Production Ready is exactly that" - Stereogum</li>
+</ul>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-tour">
+    <h2>Tour</h2>
+    <div class="panel-content">
+        <h3>Upcoming Shows - "Ship It" World Tour 2025</h3>
+<table><thead><tr><th>Date</th><th>City</th><th>Venue</th><th>Tickets</th></tr></thead><tbody>
+<tr><td>Mar 15, 2025</td><td>Berlin</td><td>Columbiahalle</td><td>On Sale</td></tr>
+<tr><td>Mar 18, 2025</td><td>Amsterdam</td><td>Paradiso</td><td>On Sale</td></tr>
+<tr><td>Mar 21, 2025</td><td>London</td><td>Electric Ballroom</td><td>Sold Out</td></tr>
+<tr><td>Mar 24, 2025</td><td>Paris</td><td>La Cigale</td><td>On Sale</td></tr>
+<tr><td>Mar 28, 2025</td><td>Barcelona</td><td>Razzmatazz</td><td>On Sale</td></tr>
+<tr><td>Apr 02, 2025</td><td>New York</td><td>Webster Hall</td><td>On Sale</td></tr>
+<tr><td>Apr 05, 2025</td><td>San Francisco</td><td>The Fillmore</td><td>Sold Out</td></tr>
+<tr><td>Apr 08, 2025</td><td>Seattle</td><td>The Showbox</td><td>On Sale</td></tr>
+<tr><td>Apr 12, 2025</td><td>Tokyo</td><td>Shibuya Club Quattro</td><td>On Sale</td></tr>
+</tbody></table>
+<p><strong>Special Guests:</strong> The Garbage Collectors, Null Pointer Exception</p>
+<hr />
+<h3>Past Tours</h3>
+<p><strong>2024 - "Fearless Concurrency" Tour</strong></p>
+<ul>
+<li>45 shows across Europe and North America</li>
+<li>Over 100,000 tickets sold</li>
+</ul>
+<p><strong>2023 - "Compile Time" Club Tour</strong></p>
+<ul>
+<li>28 shows in Germany and neighboring countries</li>
+<li>First international shows in London and Amsterdam</li>
+</ul>
+<p><strong>2021 - "Hello World" Release Shows</strong></p>
+<ul>
+<li>5 intimate club shows in Berlin</li>
+<li>Recorded for live album</li>
+</ul>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-press">
+    <h2>Press</h2>
+    <div class="panel-content">
+        <h3>Selected Press Quotes</h3>
+<blockquote>
+<p>"Rust &amp; Roll prove that nerd culture and rock music are a perfect match. Their shows are part concert, part tech conference keynote." - <strong>The Guardian</strong></p>
+</blockquote>
+<blockquote>
+<p>"If Metallica learned to code, they might sound something like this." - <strong>Kerrang!</strong></p>
+</blockquote>
+<blockquote>
+<p>"The most original band to emerge from the European rock scene in years." - <strong>Metal Hammer</strong></p>
+</blockquote>
+<blockquote>
+<p>"Their lyrics about memory management somehow make you want to mosh." - <strong>Ars Technica</strong></p>
+</blockquote>
+<h3>Awards &amp; Recognition</h3>
+<table><thead><tr><th>Year</th><th>Award</th><th>Category</th></tr></thead><tbody>
+<tr><td>2024</td><td>German Music Award</td><td>Best Rock Album</td></tr>
+<tr><td>2023</td><td>Berlin Music Prize</td><td>Best Live Act</td></tr>
+<tr><td>2022</td><td>European Festival Award</td><td>Best New Band</td></tr>
+<tr><td>2021</td><td>Hacker News Front Page</td><td>Most Upvoted Band Post</td></tr>
+</tbody></table>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-music-videos">
+    <h2>Music Videos</h2>
+    <div class="panel-content">
+        <ul>
+<li><strong>"Borrow Checker Blues"</strong> (2022) - 2.5M views</li>
+<li><strong>"Deploy Friday"</strong> (2024) - 1.8M views</li>
+<li><strong>"Hello World"</strong> (2020) - 1.2M views</li>
+<li><strong>"Unsafe Block"</strong> (2022) - 950K views</li>
+</ul>
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-interviews">
+    <h2>Interviews</h2>
+    <div class="panel-content">
+        <ul>
+<li><strong>"Coding and Rocking"</strong> - Vice Documentary (2023)</li>
+<li><strong>"The Sound of Open Source"</strong> - Spotify Podcast (2024)</li>
+<li><strong>"From Pull Request to Rock Star"</strong> - GitHub Blog (2022)</li>
+</ul>
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-merchandise">
+    <h2>Merchandise</h2>
+    <div class="panel-content">
+        <p>Available at shows and online:</p>
+<ul>
+<li>Tour T-Shirts</li>
+<li>"Fearless Concurrency" Hoodie</li>
+<li>Vinyl Records (Limited Edition)</li>
+<li>Custom Guitar Picks</li>
+<li>"I Survived the Borrow Checker" Stickers</li>
+</ul>
+<hr />
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-contact">
+    <h2>Contact</h2>
+    <div class="panel-content">
+        <h3>Booking &amp; Press</h3>
+<table><thead><tr><th>Contact</th><th>Email</th></tr></thead><tbody>
+<tr><td>Management</td><td>management@rustandroll.band</td></tr>
+<tr><td>Booking EU</td><td>booking-eu@rustandroll.band</td></tr>
+<tr><td>Booking US</td><td>booking-us@rustandroll.band</td></tr>
+<tr><td>Press</td><td>press@rustandroll.band</td></tr>
+</tbody></table>
+<h3>Social Media</h3>
+<ul>
+<li>Twitter/X: @RustAndRoll</li>
+<li>Instagram: @rustandroll_official</li>
+<li>YouTube: Rust &amp; Roll Official</li>
+<li>Bandcamp: rustandroll.bandcamp.com</li>
+<li>GitHub: github.com/rustandroll (yes, really)</li>
+</ul>
+<h3>Mailing List</h3>
+<p>Sign up for tour announcements, new releases, and exclusive content.</p>
+<p><em>We promise to only send you well-typed emails. No spam, no undefined behavior.</em></p>
+<hr />
+<p><strong>Rust &amp; Roll</strong> - <em>"Zero-cost abstractions, maximum volume."</em></p>
+
+    </div>
+</div>
+
+    </div>
+
+    <script>
+/**
+ * Vellum - Minimal Panel Navigation
+ * Simple show/hide logic for pre-rendered panels
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('#nav-buttons button');
+    const dropdown = document.getElementById('dropdown');
+    const panels = document.querySelectorAll('.panel');
+
+    function showPanel(panelId) {
+        // Hide all panels
+        panels.forEach(p => p.classList.add('hidden'));
+
+        // Show selected panel
+        const panel = document.getElementById('panel-' + panelId);
+        if (panel) {
+            panel.classList.remove('hidden');
+        }
+
+        // Reset button active states
+        buttons.forEach(b => b.classList.remove('active'));
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Set up button click handlers
+    buttons.forEach(btn => {
+        btn.onclick = () => {
+            showPanel(btn.dataset.panel);
+            btn.classList.add('active');
+            if (dropdown) dropdown.selectedIndex = 0;
+        };
+    });
+
+    // Set up dropdown change handler
+    if (dropdown) {
+        dropdown.onchange = function() {
+            const option = this.options[this.selectedIndex];
+            if (option && option.dataset.panel) {
+                showPanel(option.dataset.panel);
+            }
+        };
+    }
+
+    // Show first panel on load
+    if (buttons.length > 0) {
+        buttons[0].click();
+    }
+});
+
+    </script>
+</body>
+</html>

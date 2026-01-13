@@ -15,7 +15,7 @@ Each stage has dedicated error handling with clear messages for troubleshooting.
 
 ## Configuration Reference
 
-The `config.toml` file has two sections:
+The `config.toml` file supports these sections (as of v0.1.0):
 
 **[document]**
 - `title` - Browser tab title and header text
@@ -26,6 +26,11 @@ The `config.toml` file has two sections:
 - `logo` - Path to logo image (PNG, JPG, SVG, WebP, GIF supported)
 - `output` - Path for generated HTML file
 - `skill_matrix` - Optional path to skill matrix Markdown file
+
+**[colored_tags]**
+- Key-value pairs where keys are regex patterns and values are color names
+- Available colors: green, grey, red, blue, yellow, orange, purple
+- Example: `"v\\d+\\.\\d+\\.\\d+" = "blue"` highlights version numbers
 
 ## Supported Image Formats
 

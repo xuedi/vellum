@@ -14,6 +14,7 @@ Initially built for professional portfolios with built-in support for skill matr
 - **Zero-Dependency Output**: Generates a single HTML file with all CSS, JS, and images inlined (Base64).
 - **Offline First**: Works perfectly without an internet connection.
 - **Achievement Tracking**: Highlight milestones with a simple custom syntax.
+- **Colored Tags**: Define regex patterns to automatically style text as colored tags.
 - **Smart Includes**: Compose large documents from multiple Markdown files effortlessly.
 - **Skill Matrix**: Render beautiful, color-coded skill tables automatically.
 - **Template Customization**: Fully customizable HTML templates, CSS, and JavaScript.
@@ -82,6 +83,12 @@ dropdown = "Archives"  # Optional: Header section to turn into a dropdown
 markdown = "data/index.md"     # Entry point Markdown file
 logo = "assets/logo.png"       # Path to your logo
 output = "dist/index.html"     # Where the generated HTML will be saved
+
+# Optional: Define patterns to render as colored tags
+[colored_tags]
+"KW\\d{2}-OK" = "green"        # Matches KW01-OK, KW52-OK, etc.
+"KW\\d{2}-NO" = "grey"
+"KW\\d{2}-FAIL" = "red"
 ```
 
 ## Custom Syntax
@@ -92,6 +99,23 @@ Highlight key achievements in lists using the `<!` marker:
 - 2024-05-20: Lead the migration to Microservices <! Achievement unlocked: Zero downtime migration
 ```
 The text after `<!` will be styled prominently in the output.
+
+### Colored Tags
+Define regex patterns in your config to automatically render matching text as colored pill-shaped tags:
+```toml
+[colored_tags]
+"KW\\d{2}-OK" = "green"
+"KW\\d{2}-FAIL" = "red"
+"TODO" = "yellow"
+```
+
+Then in your markdown:
+```markdown
+**Results**: KW02-OK
+```
+Will render "KW02-OK" as a green tag.
+
+Available colors: `green`, `grey`, `red`, `blue`, `yellow`, `orange`, `purple`
 
 ### File Includes
 Keep your project organized by splitting content into multiple files:

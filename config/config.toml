@@ -18,3 +18,11 @@ output = "../index.html"
 
 # Optional: Path to skill matrix file (empty string to disable)
 skill_matrix = "data/skills.md"
+
+# Optional: Replace text patterns with colored tags
+# Format: "regex_pattern" = "color"
+# Available colors: green, grey, red, blue, yellow, orange, purple
+[colored_tags]
+"KW\\d{2}-OK" = "green"
+"KW\\d{2}-NO" = "grey"
+"KW\\d{2}-FAIL" = "red"
