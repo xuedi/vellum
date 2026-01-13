@@ -139,7 +139,7 @@ pub fn generate_html_from_content(
     stats.expanded_lines = with_includes.lines().count();
 
     // Step 2: Substitute variables
-    let with_variables = substitute_variables(&with_includes);
+    let with_variables = substitute_variables(&with_includes, base_path);
 
     // Step 3: Transform achievement markers
     let transformed = transform_achievement_markers(&with_variables);

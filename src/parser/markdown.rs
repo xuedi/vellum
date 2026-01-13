@@ -3,7 +3,7 @@ use pulldown_cmark::{html, Options, Parser};
 use std::collections::HashMap;
 use std::path::Path;
 
-pub fn substitute_variables(markdown: &str) -> String {
+pub fn substitute_variables(markdown: &str, base_path: &str) -> String {
     let now = Local::now();
 
     let mut variables: HashMap<&str, String> = HashMap::new();
@@ -17,17 +17,18 @@ pub fn substitute_variables(markdown: &str) -> String {
         result = result.replace(&pattern, &value);
     }
 
-    result = substitute_last_update_variables(&result);
+    result = substitute_last_update_variables(&result, base_path);
 
     result
 }
 
-fn substitute_last_update_variables(markdown: &str) -> String {
+fn substitute_last_update_variables(markdown: &str, base_path: &str) -> String {
     use std::fs;
 
     let mut result = markdown.to_string();
     let pattern_start = "{{lastUpdate:";
     let pattern_end = "}}";
+    let base = Path::new(base_path);
 
     while let Some(start) = result.find(pattern_start) {
         let after_start = start + pattern_start.len();
@@ -35,7 +36,10 @@ fn substitute_last_update_variables(markdown: &str) -> String {
             let end = after_start + end_offset;
             let file_path = &result[after_start..end];
 
-            let date_str = if let Ok(metadata) = fs::metadata(file_path) {
+            // Resolve path relative to base_path
+            let full_path = base.join(file_path);
+
+            let date_str = if let Ok(metadata) = fs::metadata(&full_path) {
                 if let Ok(modified) = metadata.modified() {
                     let datetime: chrono::DateTime<Local> = modified.into();
                     datetime.format("%Y-%m-%d").to_string()
@@ -235,7 +239,7 @@ mod tests {
     #[test]
     fn test_substitute_current_year() {
         let input = "Year: {{currentYear}}";
-        let output = substitute_variables(input);
+        let output = substitute_variables(input, ".");
         assert!(output.contains("202"));
         assert!(!output.contains("{{"));
     }
@@ -243,7 +247,7 @@ mod tests {
     #[test]
     fn test_substitute_current_date() {
         let input = "Date: {{currentDate}}";
-        let output = substitute_variables(input);
+        let output = substitute_variables(input, ".");
         assert!(output.contains("-"));
         assert!(!output.contains("{{"));
     }
@@ -251,22 +255,42 @@ mod tests {
     #[test]
     fn test_substitute_current_datetime() {
         let input = "Updated: {{currentDateTime}}";
-        let output = substitute_variables(input);
+        let output = substitute_variables(input, ".");
         assert!(!output.contains("{{"));
     }
 
     #[test]
     fn test_substitute_multiple_variables() {
         let input = "{{currentYear}} and {{currentYear}} again";
-        let output = substitute_variables(input);
+        let output = substitute_variables(input, ".");
         assert!(!output.contains("{{"));
     }
 
     #[test]
     fn test_substitute_unknown_variable() {
         let input = "Unknown: {{unknownVar}}";
-        let output = substitute_variables(input);
+        let output = substitute_variables(input, ".");
         assert!(output.contains("{{unknownVar}}"));
+    }
+
+    #[test]
+    fn test_substitute_last_update_with_path() {
+        use std::fs;
+        use tempfile::TempDir;
+
+        let dir = TempDir::new().unwrap();
+        let subdir = dir.path().join("subdir");
+        fs::create_dir(&subdir).unwrap();
+        let file_path = subdir.join("test.md");
+        fs::write(&file_path, "content").unwrap();
+
+        let input = "Updated: {{lastUpdate:subdir/test.md}}";
+        let output = substitute_variables(input, dir.path().to_str().unwrap());
+
+        // Should contain a date, not "unknown"
+        assert!(!output.contains("{{"));
+        assert!(!output.contains("unknown"));
+        assert!(output.contains("-")); // Date format YYYY-MM-DD
     }
 
     #[test]
