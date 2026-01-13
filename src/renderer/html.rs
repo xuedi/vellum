@@ -10,17 +10,8 @@ impl HtmlRenderer {
         Self
     }
 
-    /// Shift heading levels up by one (h4→h3, h5→h4, h6→h5)
-    fn shift_headings_up(html: &str) -> String {
-        let mut result = html.to_string();
-        // Process in reverse order to avoid h5 becoming h4 then h3
-        result = result.replace("<h6>", "<h5>").replace("</h6>", "</h5>");
-        result = result.replace("<h5>", "<h4>").replace("</h5>", "</h4>");
-        result = result.replace("<h4>", "<h3>").replace("</h4>", "</h3>");
-        result
-    }
-
-    /// Render all panels from DocumentStructure
+    /// Render all panels from DocumentStructure.
+    /// Panels receive normalized markdown content, so no heading adjustment needed here.
     fn render_panels(&self, doc: &DocumentStructure) -> String {
         let mut result = String::new();
         let mut first = true;
@@ -30,14 +21,6 @@ impl HtmlRenderer {
             first = false;
 
             let html_content = parse_markdown(&panel.markdown_content);
-
-            // For dropdown items, shift heading levels up (h4→h3, etc.)
-            // since their content starts one level deeper in the document tree
-            let html_content = if panel.is_dropdown_item {
-                Self::shift_headings_up(&html_content)
-            } else {
-                html_content
-            };
 
             result.push_str(&format!(
                 r#"<div class="panel{}" id="panel-{}">

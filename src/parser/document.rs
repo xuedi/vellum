@@ -2,6 +2,10 @@
 ///
 /// Parses processed markdown into a tree structure that separates
 /// regular sections from dropdown items for pre-rendering.
+///
+/// Each content panel receives normalized markdown where headings
+/// start at the appropriate level for rendering, regardless of
+/// their original position in the document tree.
 
 use super::sections::slugify;
 
@@ -12,13 +16,34 @@ pub struct NavItem {
     pub title: String,
 }
 
-/// A content panel with pre-rendered HTML
+/// A content panel ready for rendering.
+/// The markdown_content has normalized heading levels.
 #[derive(Debug, Clone)]
 pub struct ContentPanel {
     pub id: String,
     pub title: String,
     pub markdown_content: String,
-    pub is_dropdown_item: bool,
+}
+
+/// Shift markdown heading levels up by one (#### → ###, ##### → ####, etc.)
+/// This normalizes content from deeper document levels to start at h3.
+fn shift_markdown_headings(content: &str) -> String {
+    content
+        .lines()
+        .map(|line| {
+            let trimmed = line.trim_start();
+            if trimmed.starts_with("###### ") {
+                line.replacen("######", "#####", 1)
+            } else if trimmed.starts_with("##### ") {
+                line.replacen("#####", "####", 1)
+            } else if trimmed.starts_with("#### ") {
+                line.replacen("####", "###", 1)
+            } else {
+                line.to_string()
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 /// Parsed document structure
@@ -95,11 +120,13 @@ pub fn parse_document_structure(markdown: &str, dropdown_section: Option<&str>) 
                             title: sub_title.clone(),
                         });
 
+                        // Normalize heading levels for this subtree
+                        let normalized_content = shift_markdown_headings(&content_lines.join("\n"));
+
                         panels.push(ContentPanel {
                             id: sub_id,
                             title: sub_title,
-                            markdown_content: content_lines.join("\n"),
-                            is_dropdown_item: true,
+                            markdown_content: normalized_content,
                         });
 
                         continue;
@@ -132,7 +159,6 @@ pub fn parse_document_structure(markdown: &str, dropdown_section: Option<&str>) 
                 id,
                 title,
                 markdown_content: content_lines.join("\n"),
-                is_dropdown_item: false,
             });
 
             continue;
@@ -223,8 +249,22 @@ Line 2
 
         assert_eq!(doc.dropdown_items.len(), 1);
         let panel = &doc.panels[0];
-        assert!(panel.is_dropdown_item);
         assert!(panel.markdown_content.contains("Line 1"));
         assert!(panel.markdown_content.contains("Line 2"));
+    }
+
+    #[test]
+    fn test_dropdown_heading_normalization() {
+        let markdown = r#"## More
+### Projects
+#### Subsection
+Content here
+"#;
+        let doc = parse_document_structure(markdown, Some("More"));
+
+        let panel = &doc.panels[0];
+        // H4 in dropdown content should be normalized to H3
+        assert!(panel.markdown_content.contains("### Subsection"));
+        assert!(!panel.markdown_content.contains("#### Subsection"));
     }
 }
