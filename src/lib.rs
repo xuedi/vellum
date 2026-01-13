@@ -4,10 +4,10 @@ pub mod renderer;
 
 use assets::{embed_image, Assets};
 use parser::{
-    extract_sections, parse_markdown, process_includes, substitute_variables,
+    parse_document_structure, process_includes, substitute_variables,
     transform_achievement_markers, transform_skill_matrices,
 };
-use renderer::{HtmlRenderer, ParsedDocument, RenderError};
+use renderer::{HtmlRenderer, RenderError};
 use serde::Deserialize;
 use std::path::Path;
 use thiserror::Error;
@@ -134,30 +134,30 @@ pub fn generate_html_from_content(
         ..Default::default()
     };
 
+    // Step 1: Process includes
     let with_includes = process_includes(markdown, base_path, dropdown_section);
     stats.expanded_lines = with_includes.lines().count();
 
+    // Step 2: Substitute variables
     let with_variables = substitute_variables(&with_includes);
 
+    // Step 3: Transform achievement markers
     let transformed = transform_achievement_markers(&with_variables);
     stats.achievement_markers = transformed.matches("achievement-marker").count();
 
+    // Step 4: Transform skill matrices
     let with_skill_matrices = transform_skill_matrices(&transformed);
 
-    let html_content = parse_markdown(&with_skill_matrices);
-    stats.html_content_size = html_content.len();
+    // Step 5: Parse document structure (extracts sections and dropdown items)
+    let doc_structure = parse_document_structure(&with_skill_matrices, dropdown_section);
+    stats.section_count = doc_structure.nav_buttons.len() + doc_structure.dropdown_items.len();
 
-    let sections = extract_sections(&html_content);
-    stats.section_count = sections.len();
-
-    let document = ParsedDocument {
-        html_content,
-        sections,
-        title: title.to_string(),
-    };
-
+    // Step 6: Render using the new panel-based approach
     let renderer = HtmlRenderer::new();
-    let output = renderer.render_with_options(&document, logo_data_uri, dropdown_section, assets)?;
+    let output = renderer.render_from_structure(&doc_structure, title, logo_data_uri, assets)?;
+
+    // Calculate HTML content size from output
+    stats.html_content_size = output.len();
 
     Ok((output, stats))
 }

@@ -1,6 +1,6 @@
 use super::{ParsedDocument, RenderError, Renderer};
 use crate::assets::{embed_image, Assets};
-use crate::parser::Section;
+use crate::parser::{parse_markdown, DocumentStructure, Section};
 
 #[derive(Debug, Default)]
 pub struct HtmlRenderer;
@@ -10,6 +10,92 @@ impl HtmlRenderer {
         Self
     }
 
+    /// Render all panels from DocumentStructure
+    fn render_panels(&self, doc: &DocumentStructure) -> String {
+        let mut result = String::new();
+        let mut first = true;
+
+        for panel in &doc.panels {
+            let hidden_class = if first { "" } else { " hidden" };
+            first = false;
+
+            let html_content = parse_markdown(&panel.markdown_content);
+
+            result.push_str(&format!(
+                r#"<div class="panel{}" id="panel-{}">
+    <h2>{}</h2>
+    <div class="panel-content">
+        {}
+    </div>
+</div>
+"#,
+                hidden_class, panel.id, panel.title, html_content
+            ));
+        }
+
+        result
+    }
+
+    /// Generate navigation buttons and dropdown
+    fn generate_nav_with_dropdown(&self, doc: &DocumentStructure) -> String {
+        let mut result = String::new();
+
+        // Regular nav buttons
+        for item in &doc.nav_buttons {
+            result.push_str(&format!(
+                r#"<button data-panel="{}">{}</button>
+        "#,
+                item.id, item.title
+            ));
+        }
+
+        // Dropdown if configured
+        if let Some(ref title) = doc.dropdown_title {
+            result.push_str(&format!(
+                r#"<select id="dropdown">
+            <option disabled selected>{}</option>
+"#,
+                title
+            ));
+
+            for item in &doc.dropdown_items {
+                result.push_str(&format!(
+                    r#"            <option data-panel="{}">{}</option>
+"#,
+                    item.id, item.title
+                ));
+            }
+
+            result.push_str("        </select>");
+        }
+
+        result
+    }
+
+    /// Render using the new panel-based approach
+    pub fn render_from_structure(
+        &self,
+        doc: &DocumentStructure,
+        title: &str,
+        logo_data_uri: &str,
+        assets: &Assets,
+    ) -> Result<Vec<u8>, RenderError> {
+        let panels = self.render_panels(doc);
+        let nav = self.generate_nav_with_dropdown(doc);
+
+        let html = assets
+            .template
+            .replace("{{title}}", title)
+            .replace("{{styles}}", &assets.styles)
+            .replace("{{logo}}", logo_data_uri)
+            .replace("{{nav_buttons}}", &nav)
+            .replace("{{content}}", &panels)
+            .replace("{{script}}", &assets.script);
+
+        Ok(html.into_bytes())
+    }
+
+    // Legacy methods for backward compatibility
     fn wrap_sections(&self, html: &str, sections: &[Section]) -> String {
         if sections.is_empty() {
             return html.to_string();
@@ -55,7 +141,6 @@ impl HtmlRenderer {
             .collect::<Vec<_>>()
             .join("\n        ")
     }
-
 }
 
 impl HtmlRenderer {

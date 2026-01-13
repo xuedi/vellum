@@ -175,8 +175,8 @@ Some details here.
     let html_str = String::from_utf8(html).unwrap();
     assert!(html_str.contains("<!DOCTYPE html>"));
     assert!(html_str.contains("<title>Test Title</title>"));
-    assert!(html_str.contains("section-introduction"));
-    assert!(html_str.contains("section-details"));
+    assert!(html_str.contains("panel-introduction"));
+    assert!(html_str.contains("panel-details"));
 
     // Verify stats
     assert_eq!(stats.section_count, 2);

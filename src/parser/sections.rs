@@ -55,7 +55,7 @@ pub fn extract_sections(html: &str) -> Vec<Section> {
     sections
 }
 
-fn slugify(title: &str) -> String {
+pub fn slugify(title: &str) -> String {
     title
         .to_lowercase()
         .chars()
