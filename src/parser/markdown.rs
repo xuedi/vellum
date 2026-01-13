@@ -185,12 +185,21 @@ pub fn transform_skill_matrices(content: &str) -> String {
 
     while i < lines.len() {
         let line = lines[i];
-        let trimmed = line.trim().to_lowercase();
+        let trimmed = line.trim();
 
-        if trimmed == "#### skill matrix" {
+        // Check for "skill matrix" heading at any level (e.g., ## skill matrix, ### skill matrix, etc.)
+        let is_skill_matrix_heading = if trimmed.starts_with('#') {
+            let hash_count = trimmed.chars().take_while(|&c| c == '#').count();
+            let after_hashes = trimmed[hash_count..].trim().to_lowercase();
+            hash_count > 0 && after_hashes == "skill matrix"
+        } else {
+            false
+        };
+
+        if is_skill_matrix_heading {
+            // Skip any non-table content (empty lines, description text) until we find the table
             let mut table_start = i + 1;
-
-            while table_start < lines.len() && lines[table_start].trim().is_empty() {
+            while table_start < lines.len() && !lines[table_start].trim().starts_with('|') {
                 table_start += 1;
             }
 
@@ -201,10 +210,12 @@ pub fn transform_skill_matrices(content: &str) -> String {
                 if table_line.starts_with('|') {
                     table_lines.push(table_line);
                     j += 1;
-                } else if !table_line.is_empty() {
-                    break;
-                } else {
+                } else if table_line.is_empty() {
+                    // Skip empty lines within the table
                     j += 1;
+                } else {
+                    // Non-empty, non-table line ends the table
+                    break;
                 }
             }
 

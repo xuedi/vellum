@@ -52,7 +52,7 @@ rebuild: clean build
 install: release
     mkdir -p ~/.local/bin ~/.config/vellum/assets
     cp target/release/vellum ~/.local/bin/
-    @test -f ~/.config/vellum/config.toml || cp config.toml ~/.config/vellum/config.toml
+    @test -f ~/.config/vellum/config.toml || cp config/config.toml ~/.config/vellum/config.toml
     @test -f ~/.config/vellum/assets/style.css || cp config/assets/style.css ~/.config/vellum/assets/
     @test -f ~/.config/vellum/assets/script.js || cp config/assets/script.js ~/.config/vellum/assets/
     @test -f ~/.config/vellum/assets/template.html || cp config/assets/template.html ~/.config/vellum/assets/
