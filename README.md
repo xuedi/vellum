@@ -1,4 +1,4 @@
-# 📜 Vellum
+# Vellum
 
 [![Gitea Release](https://img.shields.io/badge/Version-v0.1.0-31c754.svg)](https://github.com/xuedi/vellum/releases)
 [![EUPL Licence](https://img.shields.io/badge/Licence-EUPL_v1.2-31c754.svg)](https://eupl.eu/1.2/en)
@@ -9,17 +9,17 @@ Vellum is a minimalist Rust-powered static site generator designed to transform 
 
 Initially built for professional portfolios with built-in support for skill matrices and achievement tracking, Vellum makes your Markdown collections transportable and readable for everyone.
 
-## ✨ Features
+## Features
 
-- 📦 **Zero-Dependency Output**: Generates a single HTML file with all CSS, JS, and images inlined (Base64).
-- 🌐 **Offline First**: Works perfectly without an internet connection.
-- 🏆 **Achievement Tracking**: Highlight milestones with a simple custom syntax.
-- 🔗 **Smart Includes**: Compose large documents from multiple Markdown files effortlessly.
-- 📊 **Skill Matrix**: Render beautiful, color-coded skill tables automatically.
-- 🏗️ **Template Customization**: Fully customizable HTML templates, CSS, and JavaScript.
-- 📅 **Dynamic Variables**: Inject dates, years, and file metadata directly into your content.
+- **Zero-Dependency Output**: Generates a single HTML file with all CSS, JS, and images inlined (Base64).
+- **Offline First**: Works perfectly without an internet connection.
+- **Achievement Tracking**: Highlight milestones with a simple custom syntax.
+- **Smart Includes**: Compose large documents from multiple Markdown files effortlessly.
+- **Skill Matrix**: Render beautiful, color-coded skill tables automatically.
+- **Template Customization**: Fully customizable HTML templates, CSS, and JavaScript.
+- **Dynamic Variables**: Inject dates, years, and file metadata directly into your content.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone the repository
@@ -33,7 +33,7 @@ just install
 vellum
 ```
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 - [Rust](https://www.rust-lang.org/tools/install) (1.70+)
@@ -47,7 +47,7 @@ This command builds the release version and:
 1. Moves the `vellum` binary to `~/.local/bin/`.
 2. Sets up `~/.config/vellum/` with default `config.toml`, `style.css`, `script.js`, and `template.html`.
 
-## 📖 Usage
+## Usage
 
 ### Basic Command
 ```bash
@@ -69,7 +69,7 @@ just test               # Run the test suite
 just check              # Run all quality checks (fmt, lint, test)
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 Vellum is configured via a `config.toml` file.
 
@@ -82,31 +82,30 @@ dropdown = "Archives"  # Optional: Header section to turn into a dropdown
 markdown = "data/index.md"     # Entry point Markdown file
 logo = "assets/logo.png"       # Path to your logo
 output = "dist/index.html"     # Where the generated HTML will be saved
-skill_matrix = "data/skills.md" # Optional: Separate skill matrix source
 ```
 
-## 📝 Custom Syntax & Conventions
+## Custom Syntax
 
-### 🎯 Achievement Markers
+### Achievement Markers
 Highlight key achievements in lists using the `<!` marker:
 ```markdown
 - 2024-05-20: Lead the migration to Microservices <! Achievement unlocked: Zero downtime migration
 ```
-*The text after `<!` will be styled prominently in the output.*
+The text after `<!` will be styled prominently in the output.
 
-### 🧩 File Includes
+### File Includes
 Keep your project organized by splitting content into multiple files:
 ```markdown
 ## Projects
-Include: [Project List](projects.md)
+Include: (projects.md)
 ```
 Vellum will automatically inline the content of `projects.md` at that location.
 
-### 📊 Skill Matrix
-Create professional, color-coded skill tables by using the `#### skill matrix` header followed by a Markdown table:
+### Skill Matrix
+Create professional, color-coded skill tables by using a `## skill matrix` heading (any heading level works) followed by a Markdown table:
 
 ```markdown
-#### skill matrix
+## skill matrix
 
 | Skill          | Level | Notes                 |
 |----------------|-------|-----------------------|
@@ -116,15 +115,15 @@ Create professional, color-coded skill tables by using the `#### skill matrix` h
 | **Tools**      |       |                       |
 | Docker         | 8     | WIP - Optimizing CI   |
 ```
-*Levels (0-10) are automatically color-coded in the generated HTML.*
+Levels (0-10) are automatically color-coded in the generated HTML.
 
-### 🕒 Template Variables
+### Template Variables
 Use dynamic variables that update every time you build:
-- `{{CURRENT_DATE}}`: Current date (YYYY-MM-DD)
-- `{{CURRENT_YEAR}}`: Current year (YYYY)
-- `{{CURRENT_DATETIME}}`: Full timestamp
-- `{{LAST_UPDATE:file.md}}`: Modification date of a specific file
+- `{{currentDate}}`: Current date (YYYY-MM-DD)
+- `{{currentYear}}`: Current year (YYYY)
+- `{{currentDateTime}}`: Current month and year
+- `{{lastUpdate:file.md}}`: Modification date of a specific file
 
-## ⚖️ License
+## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the EUPL v1.2 License. See `LICENSE` for more information.
