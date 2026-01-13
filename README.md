@@ -102,20 +102,26 @@ Include: (projects.md)
 Vellum will automatically inline the content of `projects.md` at that location.
 
 ### Skill Matrix
-Create professional, color-coded skill tables by using a `## skill matrix` heading (any heading level works) followed by a Markdown table:
+Create professional, color-coded skill tables. Vellum automatically detects tables under headings containing keywords like "skill", "matrix", "competency", or "proficiency":
 
 ```markdown
-## skill matrix
+## My Skills
 
-| Skill          | Level | Notes                 |
-|----------------|-------|-----------------------|
-| **Languages**  |       |                       |
-| Rust           | 9     | Expert level          |
-| Python         | 7     | Automation & Scripting|
-| **Tools**      |       |                       |
-| Docker         | 8     | WIP - Optimizing CI   |
+| Technology | Rating | Description           |
+|------------|--------|-----------------------|
+| **Languages**  |    |                       |
+| Rust       | 9      | Expert level          |
+| Python     | 7      | Automation & Scripting|
+| **Tools**  |        |                       |
+| Docker     | 8      | WIP - Optimizing CI   |
 ```
-Levels (0-10) are automatically color-coded in the generated HTML.
+
+Column detection is flexible:
+- **Skill column**: Skill, Skills, Name, Technology, Tool, Competency, etc.
+- **Value column**: Level, Rating, Score, Proficiency, Experience, etc.
+- **Notes column** (optional): Notes, Description, Comment, Details, etc.
+
+Values (0-10) are automatically color-coded. Rows with bold skill names and empty values become category headers.
 
 ### Template Variables
 Use dynamic variables that update every time you build:
