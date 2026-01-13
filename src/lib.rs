@@ -134,7 +134,7 @@ pub fn generate_html_from_content(
         ..Default::default()
     };
 
-    let with_includes = process_includes(markdown, base_path);
+    let with_includes = process_includes(markdown, base_path, dropdown_section);
     stats.expanded_lines = with_includes.lines().count();
 
     let with_variables = substitute_variables(&with_includes);

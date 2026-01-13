@@ -56,7 +56,7 @@ fn print_help() {
     println!("    vellum [OPTIONS]");
     println!();
     println!("OPTIONS:");
-    println!("    -c, --config <DIR>  Use config from specified directory");
+    println!("    -c, --config <PATH> Use config from specified directory or file");
     println!("    -h, --help          Print help information");
     println!("    -V, --version       Print version information");
     println!();
@@ -120,15 +120,28 @@ fn main() -> ExitCode {
     println!("Vellum - Static HTML Generator");
     println!("===============================");
 
-    let config_dir = if let Some(dir) = args.config_dir {
-        if !dir.join(CONFIG_FILE).exists() {
-            eprintln!("Error: Config file not found: {}", dir.join(CONFIG_FILE).display());
-            return ExitCode::FAILURE;
+    // Determine config directory and path
+    // Accept either a directory (will append config.toml) or a direct file path
+    let (config_dir, config_path) = if let Some(path) = args.config_dir {
+        if path.is_file() || path.extension().map_or(false, |ext| ext == "toml") {
+            // Direct file path provided
+            let dir = path.parent().map(|p| p.to_path_buf()).unwrap_or_else(|| PathBuf::from("."));
+            (dir, path)
+        } else {
+            // Directory provided
+            let file_path = path.join(CONFIG_FILE);
+            if !file_path.exists() {
+                eprintln!("Error: Config file not found: {}", file_path.display());
+                return ExitCode::FAILURE;
+            }
+            (path, file_path)
         }
-        dir
     } else {
         match find_config_dir() {
-            Some(dir) => dir,
+            Some(dir) => {
+                let file_path = dir.join(CONFIG_FILE);
+                (dir, file_path)
+            }
             None => {
                 eprintln!("Error: Could not find config.toml");
                 eprintln!("Searched locations:");
@@ -142,8 +155,6 @@ fn main() -> ExitCode {
             }
         }
     };
-
-    let config_path = config_dir.join(CONFIG_FILE);
     let config = match GeneratorConfig::from_file(&config_path) {
         Ok(config) => {
             println!("Config: {}", config_path.display());

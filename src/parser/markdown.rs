@@ -80,7 +80,7 @@ pub fn transform_achievement_markers(markdown: &str) -> String {
     result
 }
 
-pub fn process_includes(markdown: &str, base_path: &str) -> String {
+pub fn process_includes(markdown: &str, base_path: &str, _dropdown_section: Option<&str>) -> String {
     process_includes_recursive(markdown, base_path, 0, false)
 }
 
@@ -102,11 +102,13 @@ fn process_includes_recursive(
         if trimmed.starts_with('#') {
             let level = trimmed.chars().take_while(|&c| c == '#').count();
             if level > 0 && trimmed.chars().nth(level).map_or(true, |c| c.is_whitespace()) {
+                // Skip first h1 in included files (treated as file title)
                 if is_included && level == 1 && !first_h1_skipped {
                     first_h1_skipped = true;
                     continue;
                 }
 
+                // For included content, adjust heading level based on parent context
                 let effective_level = if is_included {
                     level + parent_level.max(1) - 1
                 } else {
@@ -139,8 +141,12 @@ fn process_includes_recursive(
                                     .parent()
                                     .map(|p| p.to_string_lossy().to_string())
                                     .unwrap_or_else(|| base_path.to_string());
-                                let processed =
-                                    process_includes_recursive(&content, &parent, current_level, true);
+                                let processed = process_includes_recursive(
+                                    &content,
+                                    &parent,
+                                    current_level,
+                                    true,
+                                );
                                 result.push_str(&processed);
                                 result.push('\n');
                                 continue;
@@ -266,7 +272,7 @@ mod tests {
     #[test]
     fn test_process_includes_no_includes() {
         let input = "# Title\n\nSome content";
-        let output = process_includes(input, ".");
+        let output = process_includes(input, ".", None);
         assert_eq!(output.trim(), input);
     }
 
@@ -277,7 +283,7 @@ mod tests {
         std::fs::write(&include_path, "Included content here").unwrap();
 
         let input = format!("Include: [test]({}/include_test.md)", dir.display());
-        let output = process_includes(&input, ".");
+        let output = process_includes(&input, ".", None);
         assert!(output.contains("Included content here"));
         std::fs::remove_file(&include_path).ok();
     }
@@ -285,7 +291,7 @@ mod tests {
     #[test]
     fn test_process_includes_missing_file() {
         let input = "Include: [test](nonexistent_file.md)";
-        let output = process_includes(input, ".");
+        let output = process_includes(input, ".", None);
         assert!(output.contains("Error: Could not include"));
     }
 
@@ -296,7 +302,7 @@ mod tests {
         std::fs::write(&private_path, "PRIVATE_NEVER_AS_IS\nSecret content").unwrap();
 
         let input = format!("Include: [test]({}/private_test.md)", dir.display());
-        let output = process_includes(&input, ".");
+        let output = process_includes(&input, ".", None);
         assert!(!output.contains("Secret content"));
         assert!(output.contains("Include:"));
         std::fs::remove_file(&private_path).ok();
@@ -305,7 +311,7 @@ mod tests {
     #[test]
     fn test_process_includes_non_md_file() {
         let input = "Include: [test](file.txt)";
-        let output = process_includes(input, ".");
+        let output = process_includes(input, ".", None);
         assert!(output.contains("Include:"));
     }
 
@@ -318,7 +324,7 @@ mod tests {
         let input = format!("## Parent Section\n\nInclude: [test]({}/include_new.md)", dir.display());
         // We need to pass the base path correctly. 
         // Note: process_includes currently doesn't take current level, so we'll need to update its signature or use a wrapper.
-        let output = process_includes(&input, ".");
+        let output = process_includes(&input, ".", None);
         
         // Expected behavior:
         // # Included Title is ignored.
@@ -340,7 +346,7 @@ mod tests {
         std::fs::write(&include_path, "# Title\nContent").unwrap();
 
         let input = format!("Include: []({}/include_no_label.md)", dir.display());
-        let output = process_includes(&input, ".");
+        let output = process_includes(&input, ".", None);
         assert!(output.contains("Content"));
         assert!(!output.contains("# Title"));
         std::fs::remove_file(&include_path).ok();
