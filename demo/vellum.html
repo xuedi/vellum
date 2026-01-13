@@ -621,6 +621,8 @@ body {
             <option data-panel="architecture">Architecture</option>
             <option data-panel="configuration-reference">Configuration Reference</option>
             <option data-panel="supported-image-formats">Supported Image Formats</option>
+            <option data-panel="configuration-reference-1">Configuration Reference</option>
+            <option data-panel="supported-image-formats-1">Supported Image Formats</option>
             <option data-panel="include-syntax">Include Syntax</option>
             <option data-panel="template-variables">Template Variables</option>
             <option data-panel="error-handling">Error Handling</option>
@@ -726,16 +728,139 @@ cargo build --release
 <div class="panel hidden" id="panel-architecture">
     <h2>Architecture</h2>
     <div class="panel-content">
-        <p>Vellum is built in Rust for performance and reliability. The generation pipeline follows these stages:</p>
+        <h3>Overview</h3>
+<p>Vellum is a Rust-based static site generator that transforms extended Markdown files into self-contained HTML documents. The output is a single HTML file with all assets (CSS, JavaScript, images) embedded inline, making it fully offline-capable.</p>
+<h3>Project Structure</h3>
+<pre><code>vellum/
+├── src/
+│   ├── main.rs              # CLI entry point, argument parsing
+│   ├── lib.rs               # Public API, generation pipeline orchestration
+│   ├── parser/
+│   │   ├── mod.rs           # Parser module exports
+│   │   ├── document.rs      # Document tree parsing, panel extraction
+│   │   ├── markdown.rs      # Markdown processing, includes, variables
+│   │   ├── sections.rs      # Section extraction, slugification
+│   │   └── skill_matrix.rs  # Skill matrix table transformation
+│   ├── renderer/
+│   │   ├── mod.rs           # Renderer module exports
+│   │   └── html.rs          # HTML rendering, template substitution
+│   └── assets/
+│       ├── mod.rs           # Asset loading from config directory
+│       └── embedder.rs      # Image base64 encoding
+├── config/
+│   └── assets/
+│       ├── template.html    # HTML template with placeholders
+│       ├── style.css        # Stylesheet
+│       └── script.js        # Minimal panel show/hide logic
+├── tests/
+│   └── integration.rs       # End-to-end tests
+└── .claude/
+    ├── CLAUDE.md            # Project guidelines
+    └── architecture.md      # This file
+</code></pre>
+<h3>Processing Pipeline</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                        INPUT                                    │
+│  Markdown file + Logo + Config (title, dropdown section)        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  1. PROCESS INCLUDES                                            │
+│     - Resolve `Include: (path.md)` directives                   │
+│     - Recursively embed referenced markdown files               │
+│     - Adjust heading levels for included content                │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  2. SUBSTITUTE VARIABLES                                        │
+│     - Replace 2026-01-13, 2026, etc.            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  3. TRANSFORM MARKERS                                           │
+│     - Convert `&lt;span class="achievement-marker"&gt;tag` to styled achievement markers            │&lt;/span&gt;
+│     - Apply colored_tags regex patterns from config             │
+│     - Transform skill matrix tables with level coloring         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  4. PARSE DOCUMENT STRUCTURE                                    │
+│     - Extract H2 sections → nav buttons                         │
+│     - Extract H3 under dropdown section → dropdown items        │
+│     - Normalize heading levels per panel (H4→H3 for dropdown)   │
+│     - Build ContentPanel list with markdown content             │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  5. RENDER HTML                                                 │
+│     - Convert each panel's markdown to HTML                     │
+│     - Generate navigation (buttons + dropdown)                  │
+│     - Embed logo as base64 data URI                             │
+│     - Substitute into HTML template                             │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                        OUTPUT                                   │
+│  Single self-contained HTML file                                │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>Key Data Structures</h3>
+<h4>DocumentStructure (parser/document.rs)</h4>
+<pre><code class="language-rust">struct DocumentStructure {
+    nav_buttons: Vec&lt;NavItem&gt;,      // H2 sections → top nav buttons
+    dropdown_title: Option&lt;String&gt;, // Configured dropdown section name
+    dropdown_items: Vec&lt;NavItem&gt;,   // H3 under dropdown → dropdown options
+    panels: Vec&lt;ContentPanel&gt;,      // All pre-rendered content panels
+}
+
+struct ContentPanel {
+    id: String,              // Unique panel ID (slugified title)
+    title: String,           // Panel heading
+    markdown_content: String // Normalized markdown (heading levels adjusted)
+}
+</code></pre>
+<h4>Heading Level Normalization</h4>
+<p>Content panels are rendered independently of their original document tree position:</p>
+<ul>
+<li><strong>Regular sections (H2)</strong>: Content starts at H3 level, rendered as-is</li>
+<li><strong>Dropdown items (H3)</strong>: Content starts at H4 level, shifted up (H4→H3, H5→H4)</li>
+</ul>
+<p>This normalization happens in the parser, not the renderer. The renderer receives panels with already-normalized content and doesn't need to know the original document structure.</p>
+<h3>Extended Markdown Syntax</h3>
+<h4>Includes</h4>
+<pre><code class="language-markdown">**Error: Could not include 'path/to/file.md': No such file or directory (os error 2)**
+</code></pre>
+<h4>Variables</h4>
+<pre><code class="language-markdown">2026-01-13     → 2026-01-13
+2026     → 2026
+January 2026 → 2026-01-13 14:30
+</code></pre>
+<h4>Achievement Markers</h4>
+<pre><code class="language-markdown">- Completed feature &lt;span class="achievement-marker"&gt;milestone&lt;/span&gt;
+- Fixed bug &lt;span class="achievement-marker"&gt;fix&lt;/span&gt;
+</code></pre>
+<h4>Colored Tags</h4>
+<p>Config-defined regex patterns are replaced with styled tags:</p>
+<pre><code class="language-toml">[colored_tags]
+"KW\\d{2}-OK" = "green"
+"KW\\d{2}-FAIL" = "red"
+</code></pre>
+<p>Text matching these patterns becomes <code>&lt;span class="color-tag color-tag-green"&gt;KW02-OK&lt;/span&gt;</code>.</p>
+<h4>Skill Matrix</h4>
+<p>Tables under headings containing "skill" or "matrix" are auto-styled with level-based coloring (0-10 scale, red→yellow→green gradient).</p>
+<h3>Design Principles</h3>
 <ol>
-<li><strong>Configuration Loading</strong> - Parse TOML config and resolve paths</li>
-<li><strong>Asset Loading</strong> - Read CSS, JavaScript, and logo from config directory</li>
-<li><strong>Markdown Processing</strong> - Expand includes, substitute variables, transform markers</li>
-<li><strong>HTML Generation</strong> - Convert Markdown to HTML using pulldown-cmark</li>
-<li><strong>Section Extraction</strong> - Parse level 2 headings for navigation</li>
-<li><strong>Template Rendering</strong> - Embed content and assets into final HTML</li>
+<li><strong>Self-contained output</strong>: No external dependencies, works offline</li>
+<li><strong>Pre-render everything</strong>: JavaScript only handles show/hide, no DOM manipulation</li>
+<li><strong>Separation of concerns</strong>: Parser normalizes data, renderer is structure-agnostic</li>
+<li><strong>Single file deployment</strong>: One HTML file contains everything</li>
 </ol>
-<p>Each stage has dedicated error handling with clear messages for troubleshooting.</p>
 
     </div>
 </div>
@@ -765,6 +890,47 @@ cargo build --release
     </div>
 </div>
 <div class="panel hidden" id="panel-supported-image-formats">
+    <h2>Supported Image Formats</h2>
+    <div class="panel-content">
+        <p>Vellum embeds images as base64 data URIs. Supported formats:</p>
+<h4>Skill Matrix</h4>
+<p>Tables under headings containing "skill" or "matrix" are auto-styled with level-based coloring (0-10 scale, red→yellow→green gradient).</p>
+<h3>Design Principles</h3>
+<ol>
+<li><strong>Self-contained output</strong>: No external dependencies, works offline</li>
+<li><strong>Pre-render everything</strong>: JavaScript only handles show/hide, no DOM manipulation</li>
+<li><strong>Separation of concerns</strong>: Parser normalizes data, renderer is structure-agnostic</li>
+<li><strong>Single file deployment</strong>: One HTML file contains everything</li>
+</ol>
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-configuration-reference-1">
+    <h2>Configuration Reference</h2>
+    <div class="panel-content">
+        <p>The <code>config.toml</code> file supports these sections (as of <span class="color-tag color-tag-blue">v0.1.0</span>):</p>
+<p><strong>[document]</strong></p>
+<ul>
+<li><code>title</code> - Browser tab title and header text</li>
+<li><code>dropdown</code> - Heading name to group under dropdown menu (empty to disable)</li>
+</ul>
+<p><strong>[paths]</strong></p>
+<ul>
+<li><code>markdown</code> - Path to main input file</li>
+<li><code>logo</code> - Path to logo image (PNG, JPG, SVG, WebP, GIF supported)</li>
+<li><code>output</code> - Path for generated HTML file</li>
+<li><code>skill_matrix</code> - Optional path to skill matrix Markdown file</li>
+</ul>
+<p><strong>[colored_tags]</strong></p>
+<ul>
+<li>Key-value pairs where keys are regex patterns and values are color names</li>
+<li>Available colors: green, grey, red, blue, yellow, orange, purple</li>
+<li>Example: <code>"v\\d+\\.\\d+\\.\\d+" = "blue"</code> highlights version numbers</li>
+</ul>
+
+    </div>
+</div>
+<div class="panel hidden" id="panel-supported-image-formats-1">
     <h2>Supported Image Formats</h2>
     <div class="panel-content">
         <p>Vellum embeds images as base64 data URIs. Supported formats:</p>
